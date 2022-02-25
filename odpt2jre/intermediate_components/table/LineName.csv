@@ -1,0 +1,120 @@
+"id","ja","en","ko","zh_CN","zh_TW"
+"Chichibu","秩父鉄道線","Chichibu Railway Line","지치부 철도선","秩父铁道线","秧父鐵道線"
+"Debug","デバッグ線","Debug Line","Debug선","Debug线","Debug線"
+"Hokuso.Hokuso","北総線","Hokusō Line","호쿠소선","北总线","北総線"
+"JR-East","ＪＲ線","JR Line","JR선","JR线","JR線"
+"JR-East.ChuoRapid","中央線快速電車","Chūō Line(Rapid Service)","주오선(쾌속)","中央线快速列车","中央線快速列車"
+"JR-East.ChuoSobuLocal","中央・総武各駅停車","Chūō,Sōbu Line(Local)","주오선,소부선(각역정차)","中央、总武各站停车","中央、總武各站停車"
+"JR-East.Hachiko","八高線","Hachikō Line","하치코선","八高线","八高線"
+"JR-East.Ito","伊東線","Itō Line","이토선","伊东线","伊東線"
+"JR-East.Itsukaichi","五日市線","Itsukaichi Line","이츠카이치선","五日市线","五日市線"
+"JR-East.Joban","常磐線","Jōban Line","조반선","常磐线","常磐線"
+"JR-East.JobanLocal","常磐線各駅停車","Jōban Line(Local Train)","조반선(각역정차)","常磐线各站停车","常磐線各站停車"
+"JR-East.JobanRapid","常磐線快速電車","Jōban Line(Rapid Service)","조반선(쾌속)","常磐线快速列车","常磐線快速列車"
+"JR-East.Kashima","鹿島線","Kashima Line","가시마선","鹿岛线","鹿島線"
+"JR-East.Kawagoe","川越線","Kawagoe Line","가와고에선","川越线","川越線"
+"JR-East.KeihinTohokuNegishi","京浜東北線","Keihin-Tōhoku Line","게이힌토호쿠선","京滨东北线","京濱東北線"
+"JR-East.Keiyo","京葉線","Keiyō Line","게이요선","京叶线","京葉線"
+"JR-East.Kururi","久留里線","Kururi Line","구루리선","久留里线","久留里線"
+"JR-East.Musashino","武蔵野線","Musashino Line","무사시노선","武藏野线","武藏野線"
+"JR-East.Nambu","南武線","Nambu Line","난부선","南武线","南武線"
+"JR-East.Narita","成田線","Narita Line","나리타선","成田线","成田線"
+"JR-East.Ome","青梅線","Ōme Line","오메선","青梅线","青梅線"
+"JR-East.Sagami","相模線","Sagami Line","사가미선","相模线","相模線"
+"JR-East.SaikyoKawagoe","埼京線","Saikyō Line","사이쿄선","埼京线","埼京線"
+"JR-East.ShonanShinjuku","湘南新宿ライン","Shōnan-Shinjuku Line","쇼난신주쿠라인","湘南新宿线","湘南新宿線"
+"JR-East.Sobu","総武本線","Sōbu Line","소부선","总武本线","總武本線"
+"JR-East.SobuRapid","総武快速線","Sōbu Line(Rapid Service)","소부선(쾌속)","总武快速线","總武快速線"
+"JR-East.Sotobo","外房線","Sotobō Line","소토보선","外房线","外房線"
+"JR-East.Takasaki","高崎線","Takasaki Line","다카사키선","高崎线","高崎線"
+"JR-East.Togane","東金線","Tōgane Line","도가네선","东金线","東金線"
+"JR-East.Tokaido","東海道線","Tōkaidō Line","도카이도선","东海道线","東海道線"
+"JR-East.Tsurumi","鶴見線","Tsurumi Line","츠루미선","鹤见线","鶴見線"
+"JR-East.Uchibo","内房線","Uchibō Line","우치보선","内房线","內房線"
+"JR-East.UenoTokyo","上野東京ライン","Ueno-Tōkyō Line","우에노 도쿄 라인","上野东京线","上野東京線"
+"JR-East.Utsunomiya","宇都宮線","Utsunomiya Line","우츠노미야선(도호쿠선)","宇都宫线","宇都宮線"
+"JR-East.Yamanote","山手線","Yamanote Line","야마노테선","山手线","山手線"
+"JR-East.Yokohama","横浜線","Yokohama Line","요코하마선","横滨线","橫濱線"
+"JR-East.Yokosuka","横須賀線","Yokosuka Line","요코스카선","横须贺线","橫須賀線"
+"Keikyu","京急線","Keikyū Line",,,
+"Keikyu.Airport","京急空港線","Keikyū Airport Line",,,
+"Keikyu.Daishi","京急大師線","Keikyū Daishi Line",,,
+"Keikyu.Kurihama","京急久里浜線","Keikyū Kurihama Line",,,
+"Keikyu.Zushi","京急逗子線","Keikyū Zushi Line",,,
+"Keio","京王線","Keiō Line","게이오선선","京王线","京王線"
+"Keio.Dobutsuen","京王動物園線","Keiō Dōbutsuen Line",,,
+"Keio.Inokashira","京王井の頭線","Keiō Inokashira Line","게이오 이노가시라선",,
+"Keio.Keibajo","京王競馬場線","Keiō Keibajō Line",,,
+"Keio.KeioNew","京王新線","Keiō New Line","게이오 신선","京王新线","京王新線"
+"Keio.Sagamihara","京王相模原線","Keiō Sagamihara Line","게이오 사가미하라선",,
+"Keio.Takao","京王高尾線","Keiō Takao Line","게이오 다카오선",,
+"Keisei","京成線","Keisei Line","게이세이선","京成线","京成線"
+"Keisei.ChibaChihara","京成千葉線・千原線","Keisei Chiba•Chihara Line","게이세이 치바선・치하라선","京成千叶线・千原线","京成千葉線・千原線"
+"Keisei.HigashiNaritaShibayama","京成東成田線・芝山鉄道線","Keisei Higashi-Narita Line•Shibayama Line","게이세이 히가시나리타선・시바야마철도선","京成东成田线・芝山铁道线","京成東成田線・芝山鐵道線"
+"Keisei.Kanamachi","京成金町線","Keisei Kanamachi Line","게이세이 카나마치선","京成金町线","京成金町線"
+"Keisei.KeiseiMain","京成本線","Keisei Main Line","게이세이 본선","京成本線","京成本線"
+"Keisei.KeiseiOshiage","京成押上線","Keisei Oshiage Line","게이세이 오시아게선","京成押上线","京成押上線"
+"Keisei.NaritaSkyAccess","京成成田スカイアクセス線","Keisei Narita SKY ACCESS Line","게이세이 나리타 스카이액세스선","京成成田SKY ACCESS线","京成成田SKY ACCESS線"
+"MIR","首都圏新都市鉄道線","Metropolitan Intercity Railway Line",,,
+"MIR.TsukubaExpress","つくばエクスプレス線","Tsukuba Express Line",,,
+"Odakyu","小田急線","Odakyū Line",,,
+"Seibu","西武線","Seibu Line","세이부선","西武线","西武線"
+"Seibu.Haijima","西武拝島線","Seibu Haijima Line","세이부 하이지마선","西武拜岛线","西武拜島線"
+"Seibu.Ikebukuro","西武池袋線","Seibu Ikebukuro Line","세이부 이케부쿠로선","西武池袋线","西武池袋線"
+"Seibu.Kokubunji","西武国分寺線","Seibu Kokubunji Line","세이부 고쿠분지선","西武国分寺线","西武國分寺線"
+"Seibu.Sayama","西武狭山線","Seibu Sayama Line","세이부 사야마선","西武狭山线","西武狹山線"
+"Seibu.SeibuChichibu","西武秩父線","Seibu Chichibu Line","세이부 치치부선","西武秩父线","西武秩父線"
+"Seibu.Seibuen","西武西武園線","Seibu Seibuen Line","세이부 세이부엔선","西武西武园线","西武西武園線"
+"Seibu.SeibuYurakucho","西武有楽町線","Seibu Yūrakuchō Line","세이부 유라쿠초선","西武有乐町线","西武有樂町線"
+"Seibu.Shinjuku","西武新宿線","Seibu Shinjuku Line","세이부 신주쿠선","西武新宿线","西武新宿線"
+"Seibu.Tamagawa","西武多摩川線","Seibu Tamagawa Line","세이부 다마가와선","西武多摩川线","西武多摩川線"
+"Seibu.Tamako","西武多摩湖線","Seibu Tamako Line","세이부 다마코선","西武多摩湖线","西武多摩湖線"
+"Seibu.Toshima","西武豊島線","Seibu Toshima Line","세이부 도시마선","西武丰岛线","西武豐島線"
+"Seibu.Yamaguchi","西武山口線","Seibu Yamaguchi Line","세이부 야마구치선","西武山口线","西武山口線"
+"Sotetsu","相鉄線","Sōtetsu Line",,,
+"TamaMonorail.TamaMonorail","多摩モノレール","Tama Monorail",,,
+"Tobu","東武線","Tōbu Line","도부선","东武线","東武線"
+"Tobu.Daishi","東武大師線","Tōbu Daishi Line","도부 다이시선","东武大师线","東武大師線"
+"Tobu.Isesaki","東武伊勢崎線","Tōbu Isesaki Line","도부 이세사키선","东武伊势崎线","東武伊勢崎線"
+"Tobu.Kameid","東武亀戸線","Tōbu Kameido Line","도부 가메이도선","东武龟户线","東武龜戶線"
+"Tobu.Kinugawa","東武鬼怒川線","Tōbu Kinugawa Line","도부 기누가와선","东武鬼怒川线","東武鬼怒川線"
+"Tobu.Kiryu","東武桐生線","Tōbu Kiryū Line","도부 기류선","东武桐生线","東武桐生線"
+"Tobu.Koizumi","東武小泉線","Tōbu Koizumi Line","도부 고이즈미선","东武小泉线","東武小泉線"
+"Tobu.Nikko","東武日光線","Tōbu Nikkō Line","도부 닛코선 ","东武日光线","東武日光線"
+"Tobu.Ogose","東武越生線","Tōbu Ogose Line","도부 오고세선","东武越生线","東武越生線"
+"Tobu.Sano","東武佐野線","Tōbu Sano Line","도부 사노선","东武佐野线","東武佐野線"
+"Tobu.TobuSkytree","東武スカイツリー線","Tōbu SKYTREE Line","도부 스카이트리 라인","东武晴空塔线","東武晴空塔線"
+"Tobu.TobuUrbanPark","東武野田線","Tōbu Noda Line","도부 노다선","东武野田线","東武野田線"
+"Tobu.Tojo","東武東上線","Tōbu Tōjō Line","도부 도조선","东武东上线","東武東上線"
+"Tobu.Utsunomiya","東武宇都宮線","Tōbu Utsunomiya Line","도부 우쓰노미야선","东武宇都宫线","東武宇都宮線"
+"Toei","都営線","Toei Line",,,
+"Toei.Arakawa","東京さくらトラム","Tōkyō Sakura Tram",,,
+"Toei.Asakusa","都営浅草線","Toei Asakusa Line",,,
+"Toei.Mita","都営三田線","Toei Mita Line",,,
+"Toei.NipporiToneri","日暮里舎人ライナー","Nippori-toneri Liner",,,
+"Toei.Oedo","都営大江戸線","Toei Ōedo Line",,,
+"Toei.Shinjuku","都営新宿線","Toei Shinjuku Line",,,
+"TokyoMetro","東京メトロ線","Tōkyō Metro Line",,,
+"TokyoMetro.Chiyoda","東京メトロ千代田線","Tōkyō Metro Chiyoda Line",,,
+"TokyoMetro.Fukutoshin","東京メトロ副都心線","Tōkyō Metro Fukutoshin Line",,,
+"TokyoMetro.Ginza","東京メトロ銀座線","Tōkyō Metro Ginza Line",,,
+"TokyoMetro.Hanzomon","東京メトロ半蔵門線","Tōkyō Metro Hanzōmon Line",,,
+"TokyoMetro.Hibiya","東京メトロ日比谷線","Tōkyō Metro Hibiya Line",,,
+"TokyoMetro.Marunouchi","東京メトロ丸ノ内線","Tōkyō Metro Marunouchi Line",,,
+"TokyoMetro.Namboku","東京メトロ南北線","Tōkyō Metro Namboku Line",,,
+"TokyoMetro.Tozai","東京メトロ東西線","Tōkyō Metro Tōzai Line",,,
+"TokyoMetro.Yurakucho","東京メトロ有楽町線","Tōkyō Metro Yūrakuchō Line",,,
+"Tokyu","東急線","Tōkyū Line",,,
+"Tokyu.DenEnToshi","東急田園都市線","Tōkyū Den-en-toshi Line",,,
+"Tokyu.Ikegami","東急池上線","Tōkyū Ikegami Line",,,
+"Tokyu.Kodomonokuni","東急こどもの国線","Tōkyū Kodomonokuni Line",,,
+"Tokyu.Meguro","東急目黒線","Tōkyū Meguro Line",,,
+"Tokyu.Oimachi","東急大井町線","Tōkyū Ōimachi Line",,,
+"Tokyu.Setagaya","東急世田谷線","Tōkyū Setagaya Line",,,
+"Tokyu.TokyuTamagawa","東急多摩川線","Tōkyū Tamagawa Line",,,
+"Tokyu.Toyoko","東急東横線","Tōkyū Tōyoko Line",,,
+"TWR","東京臨海高速鉄道線","Tokyo Waterfront Area Rapid Transit Line",,,
+"TWR.Rinkai","りんかい線","Rinkai Line",,,
+"YokohamaMunicipal","横浜市営地下鉄線","Yokohama Municipal Subway Line",,,
+"YokohamaMunicipal.Blue","横浜市営地下鉄ブルーライン","Yokohama Municipal Subway Blue Line",,,
+"YokohamaMunicipal.Green","横浜市営地下鉄グリーンライン","Yokohama Municipal Subway Green Line",,,
