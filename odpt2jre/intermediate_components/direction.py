@@ -2,7 +2,7 @@ import re
 from typing import Optional
 from .multi_language_expression import MultiLanguageExpression
 from .station import StationName
-from .enumerate import StringEnum, auto
+from .enums import StringEnum, auto
 
 
 class DirectionEnum(StringEnum):
@@ -66,6 +66,27 @@ class DirectionEnum(StringEnum):
                 return "Inner/Outer circle"
             case DirectionEnum.FOR_STATION:
                 return "For"
+            case _:
+                raise ValueError
+
+    def format_ko(self) -> str:
+        match self:
+            case DirectionEnum.NULL:
+                return ""
+            case DirectionEnum.INBOUND:
+                return "Inbound line"
+            case DirectionEnum.OUTBOUND:
+                return "Outbound line"
+            case DirectionEnum.INBOUND_AND_OUTBOUND:
+                return "상하행선"
+            case DirectionEnum.INNER_CIRCLE:
+                return "Inner circle"
+            case DirectionEnum.OUTER_CIRCLE:
+                return "외선 순환"
+            case DirectionEnum.INNER_AND_OUTER_CIRCLE:
+                return "Inner/Outer circle"
+            case DirectionEnum.FOR_STATION:
+                return "방면"
             case _:
                 raise ValueError
 

@@ -1,4 +1,4 @@
-from .enumerate import StringEnum, auto
+from .enums import StringEnum, auto
 
 class OrdinalDirection(StringEnum):
     """

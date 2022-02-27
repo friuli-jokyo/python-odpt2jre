@@ -134,6 +134,10 @@ class TrainInformation:
         result["infoStatus"] = self.status_enum_header.to_dict()
         result["infoText"] = self.text_info.to_dict()
         result["rawText"] = self.text_raw.to_dict()
+        if self.time_occur:
+            result["causeTime"] = self.time_occur.format_24h()
+        if self.time_resume:
+            result["resumeTime"] = self.time_resume.format_24h()
         if self.date:
             result["date"] = self.date.isoformat()
         if self.valid:
@@ -145,8 +149,7 @@ class TrainInformation:
 
         result:str = ""
 
-        if self.line_body:
-            result += self.line_body.format_ja() + "は、"
+        result += self.line_body.format_ja() + "は、"
 
         if not self.time_resume and self.status_main.enum == StatusEnum.OPERATION_STOP:
             if self.time_occur:
@@ -179,10 +182,13 @@ class TrainInformation:
                 case StatusEnum.OPERATION_RESUMED|StatusEnum.DIRECT_RESUMED:
                     if not self.status_main:
                         result += "ました。"
-                    elif self.status_main.modifiers or self.status_main.enum != StatusEnum.DELAY:
+                    elif self.status_main.modifiers[0] or (self.status_main.enum != StatusEnum.DELAY and not self.status_main.sub_status):
                         result += "、"
                 case _:
                     pass
+        else:
+            if self.status_main.enum == StatusEnum.NULL:
+                self.status_main.enum = StatusEnum.NORMAL
 
         if self.status_main:
             result += self.status_main.build_ja()
@@ -212,6 +218,8 @@ class TrainInformation:
         if self.occasion:
             status = self.status_occasion
         else:
+            if self.status_main.enum == StatusEnum.NULL:
+                return ""
             status = self.status_main
 
         pre_line, post_line, post_script = status.build_main_en()
@@ -224,7 +232,10 @@ class TrainInformation:
             result += " "+post_line
 
         if self.cause and self.cause.format_en():
-            result += " "+self.cause.format_en()
+            if not self.time_resume and self.status_main.enum == StatusEnum.OPERATION_STOP and self.time_occur:
+                result += " "+self.cause.format_en(self.time_occur.format_en())
+            else:
+                result += " "+self.cause.format_en()
 
         if self.occasion and status.enum == StatusEnum.OPERATION_RESUMED:
             result += " but has resumed operation"
@@ -239,9 +250,28 @@ class TrainInformation:
 
         result += "."
 
+        if not self.occasion and self.time_resume:
+            result += "It is expected to resume operation around %s." % self.time_resume.format_en()
+
         for sub in self.statuses_sub:
             result += " "+sub.build_sub_en()
         if post_script:
             result += " "+post_script
 
         return result
+
+    def build_ko(self) -> str:
+
+        result:str = ""
+
+        if self.occasion:
+            status = self.status_occasion
+        else:
+            if self.status_main.enum == StatusEnum.NULL:
+                return ""
+            status = self.status_main
+
+        result += self.line_body.format_ko() + "은"
+
+        if self.cause:
+            result += " "+self.cause.format_ko()

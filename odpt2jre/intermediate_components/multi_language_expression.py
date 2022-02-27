@@ -39,7 +39,7 @@ class MultiLanguageExpression(ABC):
     @classmethod
     @property
     def regrex(cls) -> str:
-        return str(f"\\[{cls.header}:(.+?)\\]")
+        return str(f"\\[{cls.header}:([\\[\\]\\:\\.\\_a-zA-Z0-9]+?)\\]")
 
     @abstractmethod
     def format_ja(self) -> str:
@@ -112,14 +112,12 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
 
     _id2text: ClassVar[dict[str,list[str]]]
     _text2id: ClassVar[dict[str,str]]
+    alias_dict: ClassVar[dict[str,str]]
 
     def __init__(self, field: str) -> None:
         super().__init__(field)
         if self._args:
-            if len(self._args)==1:
-                self.id = self._args[0]
-            else:
-                raise ValueError("Too many arguments.")
+            self.id = self._args[0]
         elif id := self._text2id.get(field, None):
             self.id = id
         else:
@@ -161,38 +159,40 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
         result:dict[str,str] = {}
         if self.id:
             result["id"] = self.id
-        result["ja"] = self.ja
+        result["ja"] = self.format_ja()
         if self.en:
-            result["en"] = self.en
+            result["en"] = self.format_en()
         if self.ko:
-            result["ko"] = self.ko
+            result["ko"] = self.format_ko()
         if self.zh_CN:
-            result["zh-Hans"] = self.zh_CN
+            result["zh-Hans"] = self.format_zh_CN()
         if self.zh_TW:
-            result["zh-Hant"] = self.zh_TW
+            result["zh-Hant"] = self.format_zh_TW()
         return result
 
     @classmethod
     def set_table_from_csv(cls, filename_id2text:str, filename_alias:str) -> None:
-        id2text: dict[str, list[str]] = {}
-        text2id: dict[str, str] = {}
+        cls._id2text = {}
+        cls._text2id = {}
+        cls.alias_dict = {}
         with open("{}/table/{}".format(os.path.dirname(__file__), filename_id2text), encoding="utf-8") as f:
             data = csv.reader(f)
             for row in data:
                 try:
-                    id2text[row[0]] = row[1:]
-                    text2id[row[1]] = row[0]
+                    cls._id2text[row[0]] = row[1:]
+                    cls._text2id[row[1]] = row[0]
                 except IndexError:
                     pass
         with open("{}/table/{}".format(os.path.dirname(__file__), filename_alias), encoding="utf-8") as f:
             data = csv.reader(f)
             for row in data:
                 try:
-                    text2id[row[0]] = row[1]
+                    cls._text2id[row[0]] = row[1]
+                    cls.alias_dict[row[0]] = cls._id2text[row[1]][0]
                 except IndexError:
                     pass
-        cls._id2text = id2text
-        cls._text2id = text2id
+                except KeyError:
+                    pass
 
     @classmethod
     def embed_field(cls, text:str) -> str:

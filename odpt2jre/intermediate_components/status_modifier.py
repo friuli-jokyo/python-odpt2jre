@@ -24,6 +24,21 @@ class StatusModifier:
         self.sections = []
         self.others = []
 
+    def __bool__(self) -> bool:
+        if self.still:
+            return True
+        if self.lines:
+            return True
+        if self.sections:
+            return True
+        if self.direction:
+            return True
+        if self.some_train:
+            return True
+        if self.others:
+            return True
+        return False
+
     def append_content(self, obj:MultiLanguageExpression) -> None:
         match obj:
             case LineName():
@@ -110,6 +125,8 @@ class StatusModifier:
         # After line name
         if self.direction:
             post_line.append(self.direction.format_en())
+        else:
+            post_line.append(DirectionEnum.INBOUND_AND_OUTBOUND.format_en())
 
         if section and section_preposition:
             match section:

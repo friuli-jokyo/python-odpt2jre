@@ -2,9 +2,8 @@ import re
 
 import odpttraininfo as odpt
 
-from .field import embed_field
-from ..intermediate_components.line import LineName
-from ..intermediate_components.train_information import TrainInformation
+from .field_string import embed_field
+from ..intermediate_components import *
 from . import common
 
 def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:

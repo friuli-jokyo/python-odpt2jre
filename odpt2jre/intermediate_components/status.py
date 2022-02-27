@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional
 
 from .common import concat_en, concat_ja
-from .enumerate import StringEnum, auto
+from .enums import StringEnum, auto
 from .line import LineName
 from .status_modifier import StatusModifier
 
@@ -303,7 +303,7 @@ class StatusPlacement(StringEnum):
 
     OCCASION = auto()
     MAIN = auto()
-    SUB = auto()
+    WITH = auto()
 
 class StatusIcon(StringEnum):
 
@@ -324,10 +324,15 @@ class Status:
     last_statuses: list[Status]
     _placement: StatusPlacement
 
-    def __init__(self, placement: StatusPlacement = StatusPlacement.SUB) -> None:
+    def __init__(self, placement: StatusPlacement = StatusPlacement.WITH) -> None:
         self.modifiers = [StatusModifier()]
         self.last_statuses = []
         self._placement = placement
+
+    def DELAY_AND_CANCEL(self) -> None:
+        self.enum = StatusEnum.DELAY
+        self.sub_status = Status()
+        self.sub_status.enum = StatusEnum.SOME_TRAIN_CANCEL
 
     def supplement(self):
         if self.enum.get_suffix() != "RESUMED":
@@ -417,7 +422,7 @@ class Status:
             result.append(self.sub_status.build_ja())
             return "".join(result)
 
-        if self._placement == StatusPlacement.SUB:
+        if self._placement == StatusPlacement.WITH:
             result.append(self.build_modifiers_ja("に"))
             match self.enum:
                 case StatusEnum.DELAY:
@@ -476,6 +481,8 @@ class Status:
                     result.append("は再開しました。")
             case StatusEnum.SOME_TRAIN_CANCEL:
                 result.append(self.build_modifiers_ja("で", True))
+                if result[-1].endswith("行き列車で"):
+                    result[-1] = result[-1][:-3]
                 result.append("一部列車が運休となっています。")
             case StatusEnum.SOME_SECTION_CANCEL:
                 result.append(self.build_modifiers_ja("で", True) + "区間運休となっています。")

@@ -27,7 +27,7 @@ class Cause(MultiLanguageExpression, header=""):
         Returns
         -------
         str
-            e.g. ``"東京駅での混雑の影響で、"``
+            e.g. ``"東京駅での異音の確認の影響で、"``
         """
         result: list[str] = []
         if self.causes:
@@ -69,17 +69,20 @@ class Cause(MultiLanguageExpression, header=""):
         else:
             return ""
 
-    def format_en(self) -> str:
+    def format_en(self, time_str:str = "" ) -> str:
         """
         Returns
         -------
         str
-            e.g. ``"due to Congestion at Tōkyō Station"```
+            e.g. ``"due to Unidentified noise at Tōkyō Station"```
         """
         result: list[str] = []
         if self.causes and (cause := self.causes[0].format_en()):
             result.append("due to")
             result.append( cause )
+            if time_str:
+                result.append("that happened around")
+                result.append(time_str)
             if self.companies and (company := self.companies[0].format_en()):
                 result.append("on the")
                 result.append( company )
@@ -87,7 +90,10 @@ class Cause(MultiLanguageExpression, header=""):
                 result.append("on the")
                 result.append( line )
             elif self.sections and (section := self.sections[0].format_en()):
-                result.append("at")
+                if time_str:
+                    result.append("in")
+                else:
+                    result.append("at")
                 result.append( section )
             return " ".join(result)
         else:
@@ -98,7 +104,7 @@ class Cause(MultiLanguageExpression, header=""):
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"도쿄역에서 발생한 이상음 확인의 영향으로"``
         """
         result: list[str] = []
         if self.causes and (cause := self.causes[0].format_ko()):
@@ -124,7 +130,7 @@ class Cause(MultiLanguageExpression, header=""):
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"#TODO"```
         """
         return ""
 
@@ -133,6 +139,6 @@ class Cause(MultiLanguageExpression, header=""):
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"#TODO"```
         """
         return ""

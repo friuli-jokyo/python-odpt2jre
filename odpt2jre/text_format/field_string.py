@@ -1,28 +1,24 @@
 import re
 
-from ..intermediate_components.direction import DirectionEnum
-from ..intermediate_components.cause import CauseName
-from ..intermediate_components.company import CompanyName
-from ..intermediate_components.line import LineName
-from ..intermediate_components.station import StationName
+from ..intermediate_components import *
 
 FULL_TO_HALF = str.maketrans(
-	{
-		"０":"0",
-		"１":"1",
-		"２":"2",
-		"３":"3",
-		"４":"4",
-		"５":"5",
-		"６":"6",
-		"７":"7",
-		"８":"8",
-		"９":"9",
-	}
+    {
+        "０":"0",
+        "１":"1",
+        "２":"2",
+        "３":"3",
+        "４":"4",
+        "５":"5",
+        "６":"6",
+        "７":"7",
+        "８":"8",
+        "９":"9",
+    }
 )
 
 CAUSE = "\\[Cause:\\d+?\\]"
-COMPANY = "\\[Company:\\[a-zA-Z0-9.]+?\\]"
+COMPANY = "\\[Company:\\[\\-a-zA-Z0-9\\._]+?\\]"
 CLOCK_TIME = "\\[CLK:\\d+?\\]"
 STATION = "\\[Sta:\\d+?\\]"
 SINGLE_STA = f"\\[SingleSta:{STATION}\\]"
@@ -33,6 +29,7 @@ def embed_field(text:str) -> str:
     text = text.replace("ヶ","ケ")
     text = text.replace("停留場","駅")
     text = text.replace("お客様","お客さま")
+    text = text.replace("ホームドア","ホーム扉")
 
     # テーブル付き単語
     text = LineName.embed_field(text)
@@ -51,6 +48,10 @@ def embed_field(text:str) -> str:
 
     # その他方面
     text = DirectionEnum.embed_field(text)
+
+    # 方面付き路線
+    text = re.sub( f"\\[Line:(.+?)\\]（({Direction.regrex})）", r"[Line:\1,\2]", text )
+    text = re.sub( f"\\[Line:(.+?)\\] ({Direction.regrex})", r"[Line:\1,\2]", text )
 
     # 駅間
     text = re.sub( f"({STATION})駅?[〜～]({STATION})駅?[〜～]({STATION})駅?間", r"[BetweenSta:\1,\2,\3]", text )
@@ -96,3 +97,9 @@ def find_all_field(text: str) -> list[list[str]]:
 
 
     return result
+
+def find_field(text: str) -> list[str]:
+    try:
+        return find_all_field(text)[0]
+    except:
+        return []

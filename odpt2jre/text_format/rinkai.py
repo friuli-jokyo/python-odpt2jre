@@ -1,12 +1,9 @@
 
+import re
 import odpttraininfo as odpt
-from odpt2jre.intermediate_components.line import LineName
-from odpt2jre.intermediate_components.status import StatusEnum
-
-from ..intermediate_components.cause import Cause, CauseName
-from ..intermediate_components.train_information import TrainInformation
+from ..intermediate_components import *
 from . import common
-from .field import embed_field, find_all_field
+from .field_string import embed_field, find_all_field
 
 
 def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
@@ -17,30 +14,34 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     result:TrainInformation = TrainInformation(info)
     result.text_raw.ja = embed_field( info.train_information_text.ja )
 
-    info_text = result.text_raw.ja
+    info_text = result.text_raw.ja.split("。")
 
-    #if match := re.match( r"^(.+?駅で|)(.+?)のため", info.train_information_text.ja ):
-    #    result.cause = Cause([match[2]])
+    if len(info_text) >= 1:
+        if info_text[0].endswith("遅れがでています") or info_text[0].endswith("ダイヤが乱れています"):
+            result.status_main.enum = StatusEnum.DELAY
+    if len(info_text) >= 1:
+        if match := re.search( f"({LineName.regrex})との直通運転を中止して、", info_text[0] ):
+            if result.status_main.enum == StatusEnum.NULL:
+                result.status_main.enum = StatusEnum.DIRECT_STOP
+                result.status_main.modifiers[0].lines.append(LineName(match[1]))
+            else:
+                status = Status()
+                status.enum = StatusEnum.DIRECT_STOP
+                status.modifiers[0].lines.append(LineName(match[1]))
+                result.statuses_sub.append( status )
 
-    amari: list[list[str]] = []
+    if len(info_text) >= 2 and "影響" in info_text[1]:
+        field_list = find_all_field(info_text[1])
 
-    for field in find_all_field(info_text):
-        match field[0]:
-            case CauseName.header:
-                result.cause = Cause(field[1])
-            case LineName.header:
-                if result.cause:
-                    result.cause.lines.append(LineName(field[1]))
-                else:
-                    amari.append(field)
+        for field in field_list:
+            match field[0]:
+                case CauseName.header:
+                    result.cause = Cause(field[1])
 
-    for field in amari:
-        match field[0]:
-            case LineName.header:
-                if result.cause:
-                    result.cause.lines.append(LineName(field[1]))
-
-    if "遅れ" in info_text:
-        result.status_main.enum = StatusEnum.DELAY
+        for field in field_list:
+            match field[0]:
+                case LineName.header:
+                    if result.cause:
+                        result.cause.lines.append(LineName(field[1]))
 
     return [result]

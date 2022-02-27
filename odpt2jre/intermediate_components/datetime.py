@@ -47,7 +47,7 @@ class ClockTime(MultiLanguageExpression, header="CLK"):
             return True
         return False
 
-    def _format_with_cologne(self) -> str:
+    def _format_with_cologne(self, twenty_four_hours:bool = False) -> str:
         """
         Returns
         -------
@@ -55,12 +55,15 @@ class ClockTime(MultiLanguageExpression, header="CLK"):
             e.g. ``"1:23"``
         """
         if self.__bool__():
-            if self.hour <= 12:
+            if self.hour <= 12 or twenty_four_hours:
                 return str(self.hour) + ":"+str(self.minute).zfill(2)
             else:
                 return str(self.hour-12) + ":"+str(self.minute).zfill(2)
         else:
             return ""
+
+    def format_24h(self) -> str:
+        return self._format_with_cologne(twenty_four_hours=True)
 
     def format_ja(self) -> str:
         """
