@@ -58,6 +58,8 @@
 "MIR","首都圏新都市鉄道線","Metropolitan Intercity Railway Line",,,
 "MIR.TsukubaExpress","つくばエクスプレス線","Tsukuba Express Line",,,
 "Odakyu","小田急線","Odakyū Line",,,
+"SaitamaRailway","埼玉高速鉄道線","Saitama Railway Line",,,
+"SaitamaRailway.SaitamaRailway","埼玉スタジアム線","Saitama Stadium Line",,,
 "Seibu","西武線","Seibu Line","세이부선","西武线","西武線"
 "Seibu.Haijima","西武拝島線","Seibu Haijima Line","세이부 하이지마선","西武拜岛线","西武拜島線"
 "Seibu.Ikebukuro","西武池袋線","Seibu Ikebukuro Line","세이부 이케부쿠로선","西武池袋线","西武池袋線"
@@ -113,6 +115,8 @@
 "Tokyu.Setagaya","東急世田谷線","Tōkyū Setagaya Line",,,
 "Tokyu.TokyuTamagawa","東急多摩川線","Tōkyū Tamagawa Line",,,
 "Tokyu.Toyoko","東急東横線","Tōkyū Tōyoko Line",,,
+"ToyoRapidRailway","東葉高速鉄道線","Tōyō Rapid Railway Line",,,
+"ToyoRapidRailway.ToyoRapidRailway","東葉高速線","Tōyō Rapid Line",,,
 "TWR","東京臨海高速鉄道線","Tokyo Waterfront Area Rapid Transit Line",,,
 "TWR.Rinkai","りんかい線","Rinkai Line",,,
 "YokohamaMunicipal","横浜市営地下鉄線","Yokohama Municipal Subway Line",,,
