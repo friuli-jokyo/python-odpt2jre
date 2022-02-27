@@ -25,7 +25,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     else:
         return [common.normal_operation(info)]
 
-    if match := re.fullmatch( r"(.*?)運転を見合わせていましたが、(.*?)運転を再開し(.+?)", main_status_text ):
+    if match := re.fullmatch( r"(.*?)運?転?を?見合わせていましたが(.*?)運転を?再開し(.+?)", main_status_text ):
         main_status_text = match[3]
         result.status_occasion.enum = StatusEnum.OPERATION_RESUMED
         if field := find_field(match[2]):
