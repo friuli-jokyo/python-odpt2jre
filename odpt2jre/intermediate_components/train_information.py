@@ -132,6 +132,7 @@ class TrainInformation:
                 "zh-Hant": "全線"
             }
         result["infoStatus"] = self.status_enum_header.to_dict()
+        result["infoStatusIcon"] = self.status_enum_header.get_icon().name
         result["infoText"] = self.text_info.to_dict()
         result["rawText"] = self.text_raw.to_dict()
         if self.time_occur:
