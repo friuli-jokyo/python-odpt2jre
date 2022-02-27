@@ -42,6 +42,13 @@ class ClockTime(MultiLanguageExpression, header="CLK"):
         else:
             raise ValueError("Field string doesn't match.")
 
+    def __eq__(self, __o: object) -> bool:
+        if isinstance(__o, type(self)):
+            return self.hour == __o.hour and self.minute == __o.minute
+        if __o == None:
+            return False
+        raise NotImplementedError
+
     def __bool__(self) -> bool:
         if 0 <= self.hour < 24 and 0 <= self.minute < 60:
             return True

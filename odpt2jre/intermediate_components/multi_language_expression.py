@@ -140,6 +140,13 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
         cls.set_table_from_csv(cls.__name__+".csv",cls.__name__+"_alias.csv")
         return super().__init_subclass__(header)
 
+    def __eq__(self, __o: object) -> bool:
+        if isinstance(__o, type(self)):
+            return self.to_dict() == __o.to_dict()
+        if __o == None:
+            return False
+        raise NotImplementedError
+
     def format_ja(self) -> str:
         return self.ja
 
