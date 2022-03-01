@@ -40,5 +40,14 @@
 空港線,Keikyu.Airport
 逗子線,Keikyu.Zushi
 久里浜線,Keikyu.Kurihama
+銀座線,TokyoMetro.Ginza
+丸ノ内線,TokyoMetro.Marunouchi
+日比谷線,TokyoMetro.Hibiya
+東西線,TokyoMetro.Tozai
+千代田線,TokyoMetro.Chiyoda
+有楽町線,TokyoMetro.Yurakucho
+半蔵門線,TokyoMetro.Hanzomon
+南北線,TokyoMetro.Namboku
+副都心線,TokyoMetro.Fukutoshin
 小田急小田原線,Odakyu
 JR線,JR-East
