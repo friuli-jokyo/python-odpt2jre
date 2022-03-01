@@ -2,6 +2,8 @@ import json
 import os
 from datetime import datetime, timedelta, timezone
 
+from odpt2jre.intermediate_components.output_dict import TrainInformationDict
+
 from . import convert
 import odpttraininfo as odpt
 
@@ -25,7 +27,7 @@ def set_cache_dir(dir: str) -> None:
 def _build_cache_path() -> str:
     return os.path.join( _cache_dir, "JRE.json" )
 
-def _load(expire_second: int = 40) -> list[dict[str,object]] | None:
+def _load(expire_second: int = 40) -> list[TrainInformationDict] | None:
     cache_path = _build_cache_path()
 
     try:
@@ -42,7 +44,7 @@ def _load(expire_second: int = 40) -> list[dict[str,object]] | None:
     except FileNotFoundError:
         return None
 
-def _set() -> list[dict[str,object]]:
+def _set() -> list[TrainInformationDict]:
 
     get_info = odpt.fetch_info()
 
@@ -50,7 +52,7 @@ def _set() -> list[dict[str,object]]:
 
     os.makedirs(_cache_dir, exist_ok=True)
 
-    jre_list:list[dict[str,object]] = [ info.to_dict() for info in convert.from_odpt_list(get_info) ]
+    jre_list:list[TrainInformationDict] = [ info.to_dict() for info in convert.from_odpt_list(get_info) ]
 
     with open(cache_path, "w", encoding='utf-8') as saveCacheJSON:
         saveCacheJSON.write(json.dumps(jre_list,ensure_ascii=False))
@@ -65,7 +67,7 @@ def refresh_cache() -> None:
     odpt.refresh_cache()
     _set()
 
-def fetch_info(only_abnormal:bool = False) -> list[dict[str,object]]:
+def fetch_info(only_abnormal:bool = False) -> list[TrainInformationDict]:
 
     result = None
 

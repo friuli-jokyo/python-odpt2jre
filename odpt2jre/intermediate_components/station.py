@@ -1,3 +1,4 @@
+from .output_dict import MultiLanguageDict
 from .ordinal_direction import OrdinalDirection
 from .multi_language_expression import MultiLanguageExpression, MultiLanguageExpressionWithTable
 
@@ -155,9 +156,10 @@ class BetweenStations(MultiLanguageExpression, header="BetweenSta"):
         """
         return ""
 
-    def to_dict(self) -> dict[str,str]:
-        result:dict[str,str] = {}
-        result["ja"] = "～".join([ station.format_ja() for station in self._stations])
+    def to_dict(self) -> MultiLanguageDict:
+        result:MultiLanguageDict = {
+            "ja": "～".join([ station.format_ja() for station in self._stations])
+        }
         if en := " ~ ".join([ station.format_en() for station in self._stations]):
             result["en"] = en
         if ko := " ~ ".join([ station.format_ko() for station in self._stations]):

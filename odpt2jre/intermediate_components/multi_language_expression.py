@@ -6,6 +6,7 @@ import re
 from abc import ABC, abstractmethod
 from typing import ClassVar
 
+from .output_dict import MultiLanguageDictWithId
 
 class MultiLanguageExpression(ABC):
 
@@ -162,11 +163,11 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
     def format_zh_TW(self) -> str:
         return self.zh_TW
 
-    def to_dict(self) -> dict[str,str]:
-        result:dict[str,str] = {}
-        if self.id:
-            result["id"] = self.id
-        result["ja"] = self.format_ja()
+    def to_dict(self) -> MultiLanguageDictWithId:
+        result:MultiLanguageDictWithId = {
+            "id": self.id,
+            "ja": self.format_ja()
+        }
         if self.en:
             result["en"] = self.format_en()
         if self.ko:

@@ -6,8 +6,9 @@ from typing import Optional
 import odpttraininfo as odpt
 from odpttraininfo.odpt_components import MultiLanguageString
 
-from odpt2jre.intermediate_components.direction import Direction
-from odpt2jre.intermediate_components.station import BetweenStations
+from .direction import Direction
+from .station import BetweenStations
+from .output_dict import TrainInformationDict
 
 from .common import concat_ja
 
@@ -35,7 +36,7 @@ class TrainInformation:
     line_header: LineName
     line_body: LineName
 
-    date: Optional[datetime] = None
+    date: datetime
     valid: Optional[datetime] = None
 
     def __init__(self, info:Optional[odpt.TrainInformation] = None) -> None:
@@ -55,6 +56,7 @@ class TrainInformation:
         else:
             self.line_header = LineName("[Line:Debug]")
             self.line_body = LineName("[Line:Debug]")
+            self.date = datetime.now()
 
     @property
     def status_enum_header(self) -> StatusEnum:
@@ -103,7 +105,7 @@ class TrainInformation:
                 case _:
                     pass
 
-    def to_dict(self) -> dict[str,object]:
+    def to_dict(self) -> TrainInformationDict:
 
         self.status_main.supplement()
         self.status_occasion.supplement()
@@ -114,33 +116,34 @@ class TrainInformation:
             self.text_info.ja = self.build_ja()
         self.text_info.en = self.build_en()
 
-        result:dict[str,object] = {}
-        if self.line_header:
-            result["lineName"] = self.line_header.to_dict()
-        if self.cause:
-            result["cause"] = self.cause.causes[0].to_dict()
-        if self.direction:
-            result["direction"] = self.direction.to_dict()
-        if self.section:
-            result["section"] = self.section.to_dict()
-        else:
-            result["section"] = {
+        result:TrainInformationDict = {
+            "lineName": self.line_header.to_dict(),
+            "cause": None,
+            "direction": self.direction.to_dict(),
+            "section": {
                 "ja": "全線",
                 "en": "All lines",
                 "ko": "전선",
                 "zh-Hans": "全线",
-                "zh-Hant": "全線"
-            }
-        result["infoStatus"] = self.status_enum_header.to_dict()
-        result["infoStatusIcon"] = self.status_enum_header.get_icon().name
-        result["infoText"] = self.text_info.to_dict()
-        result["rawText"] = self.text_raw.to_dict()
+                "zh-Hant": "全線",
+            },
+            "infoStatus": self.status_enum_header.to_dict(),
+            "infoStatusIcon": self.status_enum_header.get_icon().name,
+            "infoText": self.text_info.to_dict(),
+            "rawText": self.text_raw.to_dict(),
+            "causeTime": None,
+            "resumeTime": None,
+            "date": self.date.isoformat(),
+            "valid": None,
+        }
+        if self.cause:
+            result["cause"] = self.cause.causes[0].to_dict()
+        if self.section:
+            result["section"] = self.section.to_dict()
         if self.time_occur:
             result["causeTime"] = self.time_occur.format_24h()
         if self.time_resume:
             result["resumeTime"] = self.time_resume.format_24h()
-        if self.date:
-            result["date"] = self.date.isoformat()
         if self.valid:
             result["valid"] = self.valid.isoformat()
 

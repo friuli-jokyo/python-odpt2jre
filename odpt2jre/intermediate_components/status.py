@@ -5,6 +5,7 @@ from typing import Optional
 from .common import concat_en, concat_ja
 from .enums import StringEnum, auto
 from .line import LineName
+from .output_dict import MultiLanguageDictWithId
 from .status_modifier import StatusModifier
 
 
@@ -288,14 +289,15 @@ class StatusEnum(StringEnum):
             case _:
                 return "NULL"
 
-    def to_dict(self) -> dict[str,str]:
-        result:dict[str,str] = {}
-        result["id"] = self.name
-        result["ja"] = self.format_ja()
-        result["en"] = self.format_en()
-        result["ko"] = self.format_ko()
-        result["zh-Hans"] = self.format_zh_CN()
-        result["zh-Hant"] = self.format_zh_TW()
+    def to_dict(self) -> MultiLanguageDictWithId:
+        result:MultiLanguageDictWithId = {
+            "id": self.name,
+            "ja": self.format_ja(),
+            "en": self.format_en(),
+            "ko": self.format_ko(),
+            "zh-Hans": self.format_zh_CN(),
+            "zh-Hant": self.format_zh_TW(),
+        }
         # result["ja-Hrkt"] = self.
         return result
 

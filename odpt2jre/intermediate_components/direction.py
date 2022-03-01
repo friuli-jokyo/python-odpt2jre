@@ -1,5 +1,7 @@
 import re
 from typing import Optional
+
+from .output_dict import MultiLanguageDictWithId
 from .multi_language_expression import MultiLanguageExpression
 from .station import StationName
 from .enums import StringEnum, auto
@@ -183,13 +185,14 @@ class Direction(MultiLanguageExpression, header="Direction"):
         """
         return ""
 
-    def to_dict(self) -> dict[str,str]:
-        result:dict[str,str] = {}
-        result["id"] = self.enum.name
-        result["ja"] = self.format_ja()
-        result["en"] = self.format_en()
-        result["ko"] = self.format_ko()
-        result["zh-Hans"] = self.format_zh_CN()
-        result["zh-Hant"] = self.format_zh_TW()
+    def to_dict(self) -> MultiLanguageDictWithId:
+        result:MultiLanguageDictWithId = {
+            "id": self.enum.name,
+            "ja": self.format_ja(),
+            "en": self.format_en(),
+            "ko": self.format_ko(),
+            "zh-Hans": self.format_zh_CN(),
+            "zh-Hant": self.format_zh_TW(),
+        }
         # result["ja-Hrkt"] = self.
         return result
