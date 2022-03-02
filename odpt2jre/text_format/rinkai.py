@@ -43,5 +43,11 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                 case LineName.header:
                     if result.cause:
                         result.cause.lines.append(LineName(field[1]))
+                case SingleStation.header:
+                    if result.cause:
+                        result.cause.sections.append(SingleStation(field[1]))
+                case BetweenStations.header:
+                    if result.cause:
+                        result.cause.sections.append(BetweenStations(field[1]))
 
     return [result]
