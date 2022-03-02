@@ -56,7 +56,7 @@
 "Keisei.KeiseiOshiage","京成押上線","Keisei Oshiage Line","게이세이 오시아게선","京成押上线","京成押上線"
 "Keisei.NaritaSkyAccess","京成成田スカイアクセス線","Keisei Narita SKY ACCESS Line","게이세이 나리타 스카이액세스선","京成成田SKY ACCESS线","京成成田SKY ACCESS線"
 "MIR","首都圏新都市鉄道線","Metropolitan Intercity Railway Line",,,
-"MIR.TsukubaExpress","つくばエクスプレス線","Tsukuba Express Line",,,
+"MIR.TsukubaExpress","つくばエクスプレス線","Tsukuba Express Line","츠쿠바 익스프레스선","筑波特快线","筑波快線"
 "Odakyu","小田急線","Odakyū Line",,,
 "SaitamaRailway","埼玉高速鉄道線","Saitama Railway Line",,,
 "SaitamaRailway.SaitamaRailway","埼玉スタジアム線","Saitama Stadium Line",,,
@@ -90,7 +90,7 @@
 "Tobu.Tojo","東武東上線","Tōbu Tōjō Line","도부 도조선","东武东上线","東武東上線"
 "Tobu.Utsunomiya","東武宇都宮線","Tōbu Utsunomiya Line","도부 우쓰노미야선","东武宇都宫线","東武宇都宮線"
 "Toei","都営線","Toei Line",,,
-"Toei.Arakawa","東京さくらトラム","Tōkyō Sakura Tram",,,
+"Toei.Arakawa","東京さくらトラム","Tōkyō Sakura Tram",,"Tokyo Sakura Tram","Tokyo Sakura Tram"
 "Toei.Asakusa","都営浅草線","Toei Asakusa Line",,,
 "Toei.Mita","都営三田線","Toei Mita Line",,,
 "Toei.NipporiToneri","日暮里舎人ライナー","Nippori-toneri Liner",,,
