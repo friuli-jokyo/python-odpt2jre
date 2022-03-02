@@ -25,7 +25,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                 result.status_main.enum = StatusEnum.DIRECT_STOP
                 result.status_main.modifiers[0].lines.append(LineName(match[1]))
             else:
-                status = Status()
+                status = Status(StatusPlacement.MAIN)
                 status.enum = StatusEnum.DIRECT_STOP
                 status.modifiers[0].lines.append(LineName(match[1]))
                 result.statuses_sub.append( status )
