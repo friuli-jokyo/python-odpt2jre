@@ -40,7 +40,7 @@ class MultiLanguageExpression(ABC):
     @classmethod
     @property
     def regrex(cls) -> str:
-        return str(f"\\[{cls.header}:([\\[\\]\\:\\.\\_a-zA-Z0-9]+?)\\]")
+        return str(f"\\[{cls.header}:([\\[\\]\\:\\.\\-\\_a-zA-Z0-9]+?)\\]")
 
     @abstractmethod
     def format_ja(self) -> str:
