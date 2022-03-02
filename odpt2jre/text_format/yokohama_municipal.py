@@ -15,8 +15,24 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
     info_text = result.text_raw.ja
 
-    #if match := re.match( r"^(.+?駅で|)(.+?)のため", info.train_information_text.ja ):
-    #    result.cause = Cause([match[2]])
+    if match := re.fullmatch( r"(.+?)のため(.+?)", info_text ):
+        cause_text = match[1]
+        info_text = match[2]
+
+        for field in find_all_field(cause_text):
+            match field[0]:
+                case CauseName.header:
+                    result.cause = Cause(field[1])
+
+        for field in find_all_field(cause_text):
+            match field[0]:
+                case SingleStation.header:
+                    if result.cause:
+                        result.cause.sections.append(SingleStation(field[1]))
+                case BetweenStations.header:
+                    if result.cause:
+                        result.cause.sections.append(BetweenStations(field[1]))
+
 
     field_list = find_all_field(info_text)
 
@@ -24,17 +40,12 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         match field[0]:
             case Direction.header:
                 result.status_main.modifiers[0].direction = Direction(field[1])
-            case CauseName.header:
-                result.cause = Cause(field[1])
 
     for field in field_list:
         match field[0]:
-            case SingleStation.header:
-                if result.cause:
-                    result.cause.sections.append(SingleStation(field[1]))
             case BetweenStations.header:
                 if result.cause:
-                    result.cause.sections.append(BetweenStations(field[1]))
+                    result.status_main.modifiers[0].sections.append(BetweenStations(field[1]))
 
     if "遅延" in info_text:
         result.status_main.enum = StatusEnum.DELAY
