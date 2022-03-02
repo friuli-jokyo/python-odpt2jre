@@ -94,6 +94,11 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         result.status_main.enum = StatusEnum.SOME_TRAIN_CANCEL
         result.status_main.modifiers[0].some_train = True
 
+    for i,sub_text in enumerate(sub_text_list):
+        if match := re.fullmatch( r"(.+?)(只今、.+?振替輸送を実施しています)", sub_text ):
+            sub_text_list[i] = match[1]
+            sub_text_list.append(match[2])
+
     for sub_text in sub_text_list:
         if "見込" in sub_text:
             field = find_field(sub_text)
