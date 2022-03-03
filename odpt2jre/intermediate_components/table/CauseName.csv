@@ -5,7 +5,7 @@
 "4","異音の確認","Unidentified noise","이상음 확인","确认异常音","確認異常音"
 "5","踏切安全確認","Checking safety at crossing","건널목 안전확인","道口安全确认","平交道安全確認"
 "6","強風予測","Strong wind forecast",,,
-"7","車両点検","Car inspection",,,
+"7","車両点検","Car inspection","차량점검","车辆检查","車輛檢查"
 "8","お客さま転落","Person on tracks",,,
 "9","ホーム扉点検","Platform gate inspection",,,
 "10","乗務員急病","Crew illness",,"乘务员患急病","乘務人員突發急病"
@@ -19,7 +19,7 @@
 "18","ドア点検","Door inspection","출입문 점검",,
 "19","動物と衝突","Animal collision","동물과의 충돌","和动物相撞","與動物衝撞"
 "20","車内トラブル","Trouble on board",,,
-"21","沿線火災","Fire outbreak along the line",,,
+"21","沿線火災","Fire outbreak along the line","선로변 화재","铁路沿线火灾","鐵路沿線火災"
 "22","車内点検",,,,
 "23","踏切障害",,,,
 "24","ポイント点検",,,,
@@ -40,3 +40,4 @@
 "40","路面凍結",,,,
 "42","線路に支障物",,,,
 "43","踏切内車脱輪","Derailment at crossing","건널목내에 자동차가 멈춤","道口内有车辆驶上铁轨","平交道有車輛駛進鐵路軌道"
+"44","ホーム上安全確認","Safety check","안전 확인","安全确认","安全確認"
