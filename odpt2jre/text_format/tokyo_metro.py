@@ -22,10 +22,13 @@ staList = {
 def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
     if not info.train_information_status:
-        return [common.normal_operation(info)]
+        return [common.normal_operation(info,remove_macrons=True)]
 
     result:TrainInformation = TrainInformation(info)
     result.text_raw.ja = embed_field( info.train_information_text.ja )
+
+    if result.line_header.en:
+        result.line_header.en = common.removeMacrons(result.line_header.en)
 
     info_text = result.text_raw.ja
 
