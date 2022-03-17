@@ -31,6 +31,10 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     if match := re.fullmatch( r"(.*?)運?転?を?見合わせていましたが(.*?)運転を?再開し(.+?)", main_status_text ):
         main_status_text = match[3]
         result.status_occasion.enum = StatusEnum.OPERATION_RESUMED
+        for field in find_all_field(match[1]):
+            match field[0]:
+                case BetweenStations.header:
+                    result.status_occasion.modifiers[0].sections.append(BetweenStations(field[1]))
         if field := find_field(match[2]):
             match field[0]:
                 case ClockTime.header:
