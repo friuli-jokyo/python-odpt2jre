@@ -16,6 +16,8 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
     info_text = result.text_raw.ja.split("。")
 
+    if len(info_text) >= 1 and (match := re.fullmatch(r"(.+?)(の影響で|のため)(.+?)",info_text[0])):
+        info_text = [ match[3], match[1]+"の影響で" ] + info_text[1:]
     if len(info_text) >= 1:
         if info_text[0].endswith("遅れがでています") or info_text[0].endswith("ダイヤが乱れています"):
             result.status_main.enum = StatusEnum.DELAY
