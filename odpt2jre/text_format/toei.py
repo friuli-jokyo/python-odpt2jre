@@ -69,7 +69,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                 result.status_main.modifiers[0].sections.append(BetweenStations(field[1]))
 
 
-    if "遅延" in main_status_text:
+    if "[Cause:47]" in main_status_text:
         result.status_main.enum = StatusEnum.DELAY
         if "運休" in main_status_text:
             result.status_main.DELAY_AND_CANCEL()
