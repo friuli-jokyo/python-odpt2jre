@@ -11,7 +11,7 @@
 "10","乗務員急病","Crew illness",,"乘务员患急病","乘務人員突發急病"
 "11","人身事故","Human-related accident","사상사고",,
 "12","車両故障","Car problem",,,
-"13","安全確認","Safety check",,,
+"13","安全確認","Safety check","안전 확인","安全确认","安全確認"
 "14","信号装置点検","Signal inspection",,,
 "15","架線に付着物","Accretion on overhead cables","가선 부착물","架空线上有附着物","輸電線上有異物"
 "16","線路内発煙","Smoking on tracks","선로내에서 연기 발생",,
@@ -46,4 +46,5 @@
 "47","遅延",,,,
 "48","架線点検","Cable inspection","가선점검","架空线检查","輸電線檢查"
 "49","倒竹","Fallen bamboo","선로에 나무 쓰러짐","竹子倒塌","竹子倒塌"
-"50","大規模工事",,,,
+"50","大規模工事","Heavy construction",,,
+"51","窓ガラス破損","Broken window glass","유리창 파손","窗户玻璃破损","窗玻璃破損"
