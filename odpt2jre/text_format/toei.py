@@ -1,10 +1,14 @@
 
+import copy
 import re
 import odpttraininfo as odpt
 from ..intermediate_components import *
 from . import common
 from .field_string import embed_field, find_all_field, find_field
 
+staList = {
+    "Toei.Asakusa": [["[Sta:20001]","[Sta:6001]","[Sta:20006]","[Sta:29]","[Sta:427]","[Sta:1003]"]]
+}
 
 def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
@@ -35,10 +39,49 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
             match field[0]:
                 case BetweenStations.header:
                     result.status_occasion.modifiers[0].sections.append(BetweenStations(field[1]))
-        if field := find_field(match[2]):
-            match field[0]:
-                case ClockTime.header:
-                    result.time_resume = ClockTime(field[1])
+        if match[2].endswith("は") and not result.status_occasion.modifiers[0].sections:
+            result.status_main.enum = StatusEnum.OPERATION_STOP
+            result.status_occasion.enum = StatusEnum.NULL
+            try:
+                sections = copy.deepcopy(staList[ result.line_header.id ])
+                stopSections:list[list[str]] = []
+                for field in find_all_field(match[2]):
+                    match field[0]:
+                        case BetweenStations.header:
+                            stopSections.append( BetweenStations(field[1])._args )
+
+                for stopSection in stopSections:
+                    n_sections:list[list[str]] = []
+                    for section in sections:
+                        if stopSection[0] in section and stopSection[-1] in section:
+                            start = section.index(stopSection[0])
+                            end = section.index(stopSection[-1])
+                            if end<start:
+                                start, end = end, start
+                            if start!=0:
+                                start+=1
+                            if end==len(section)-1:
+                                end+=1
+                            if start==0 or end==len(section):
+                                del section[start:end]
+                                n_sections.append(section)
+                            else:
+                                n_sections.append(section[0:start])
+                                n_sections.append(section[end:])
+                        else:
+                            n_sections.append(section)
+                    sections = n_sections
+
+                for section in sections:
+                    if len(section)>1:
+                        result.status_main.modifiers[0].sections.append(BetweenStations("[BetweenSta:%s,%s]" %(section[0],section[-1])))
+            except:
+                pass
+        else:
+            if field := find_field(match[2]):
+                match field[0]:
+                    case ClockTime.header:
+                        result.time_resume = ClockTime(field[1])
 
     cause_field_list = find_all_field(cause_text)
 
