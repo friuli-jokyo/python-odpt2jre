@@ -65,7 +65,7 @@ class DirectionEnum(StringEnum):
             case DirectionEnum.OUTER_CIRCLE:
                 return "Outer circle"
             case DirectionEnum.INNER_AND_OUTER_CIRCLE:
-                return "Inner/Outer circle"
+                return "Inner,Outer circle"
             case DirectionEnum.FOR_STATION:
                 return "For"
             case _:
@@ -76,19 +76,61 @@ class DirectionEnum(StringEnum):
             case DirectionEnum.NULL:
                 return ""
             case DirectionEnum.INBOUND:
-                return "Inbound line"
+                return "상행선"
             case DirectionEnum.OUTBOUND:
-                return "Outbound line"
+                return "하행선"
             case DirectionEnum.INBOUND_AND_OUTBOUND:
                 return "상하행선"
             case DirectionEnum.INNER_CIRCLE:
-                return "Inner circle"
+                return "내선 순환"
             case DirectionEnum.OUTER_CIRCLE:
                 return "외선 순환"
             case DirectionEnum.INNER_AND_OUTER_CIRCLE:
-                return "Inner/Outer circle"
+                return "외,내선 순환"
             case DirectionEnum.FOR_STATION:
                 return "방면"
+            case _:
+                raise ValueError
+
+    def format_zh_CN(self) -> str:
+        match self:
+            case DirectionEnum.NULL:
+                return ""
+            case DirectionEnum.INBOUND:
+                return "上行线"
+            case DirectionEnum.OUTBOUND:
+                return "下行线"
+            case DirectionEnum.INBOUND_AND_OUTBOUND:
+                return "上下行线"
+            case DirectionEnum.INNER_CIRCLE:
+                return "内环"
+            case DirectionEnum.OUTER_CIRCLE:
+                return "外环"
+            case DirectionEnum.INNER_AND_OUTER_CIRCLE:
+                return "内、外环"
+            case DirectionEnum.FOR_STATION:
+                return "方向"
+            case _:
+                raise ValueError
+
+    def format_zh_TW(self) -> str:
+        match self:
+            case DirectionEnum.NULL:
+                return ""
+            case DirectionEnum.INBOUND:
+                return "上行線"
+            case DirectionEnum.OUTBOUND:
+                return "下行線"
+            case DirectionEnum.INBOUND_AND_OUTBOUND:
+                return "上下行線"
+            case DirectionEnum.INNER_CIRCLE:
+                return "內環"
+            case DirectionEnum.OUTER_CIRCLE:
+                return "外環"
+            case DirectionEnum.INNER_AND_OUTER_CIRCLE:
+                return "內、外環"
+            case DirectionEnum.FOR_STATION:
+                return "方向"
             case _:
                 raise ValueError
 
@@ -163,27 +205,54 @@ class Direction(MultiLanguageExpression, header="Direction"):
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"상행선"``, ``"도쿄방면"``
         """
-        return ""
+        match self.enum:
+            case DirectionEnum.NULL:
+                return ""
+            case DirectionEnum.FOR_STATION:
+                if self._station:
+                    return self._station.format_ko()+self.enum.format_ko()
+                else:
+                    return ""
+            case _:
+                return self.enum.format_ko()
 
     def format_zh_CN(self) -> str:
         """
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"上行线"``, ``"东京方向"``
         """
-        return ""
+        match self.enum:
+            case DirectionEnum.NULL:
+                return ""
+            case DirectionEnum.FOR_STATION:
+                if self._station:
+                    return self._station.format_zh_CN()+self.enum.format_zh_CN()
+                else:
+                    return ""
+            case _:
+                return self.enum.format_zh_CN()
 
     def format_zh_TW(self) -> str:
         """
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"上行線"``, ``"東京方向"``
         """
-        return ""
+        match self.enum:
+            case DirectionEnum.NULL:
+                return ""
+            case DirectionEnum.FOR_STATION:
+                if self._station:
+                    return self._station.format_zh_TW()+self.enum.format_zh_TW()
+                else:
+                    return ""
+            case _:
+                return self.enum.format_zh_TW()
 
     def to_dict(self) -> MultiLanguageDictWithId:
         result:MultiLanguageDictWithId = {
