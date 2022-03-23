@@ -249,7 +249,7 @@ class StatusEnum(StringEnum):
             case StatusEnum.OPERATION_STOP:
                 return StatusIcon.CROSS
             case StatusEnum.OPERATION_RESUMED:
-                return StatusIcon.NULL
+                return StatusIcon.TRIANGLE
             case StatusEnum.DESTINATION_CHANGE:
                 return StatusIcon.NULL
             case StatusEnum.TURN_BACK_OPERATION:
