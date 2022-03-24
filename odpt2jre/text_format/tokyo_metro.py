@@ -191,7 +191,7 @@ def divide_stop_resume( info:TrainInformation, text:str ,stop:bool = True ):
             case LineName.header:
                 line_list.append(LineName(field[1]))
 
-    if line_list:
+    if line_list or "直通運転" in text:
         if info.status_main.enum==StatusEnum.NULL:
             status = info.status_main
         else:
