@@ -79,6 +79,6 @@ def fetch_info(only_abnormal:bool = False) -> list[TrainInformationDict]:
         result = _set()
 
     if only_abnormal:
-        return [single for single in result if single["infoStatus"]["id"]!="NORMAL"]
+        return [single for single in result if single["infoStatus"]["id"] not in ["NORMAL","NULL"]]
     else:
-        return result
+        return [single for single in result if single["infoStatus"]["id"] not in ["NULL"]]
