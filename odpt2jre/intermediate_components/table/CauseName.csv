@@ -9,7 +9,7 @@
 "8","お客さま転落","Person on tracks",,,
 "9","ホーム扉点検","Platform gate inspection",,,
 "10","乗務員急病","Crew illness","승무원의 급병","乘务员患急病","乘務人員突發急病"
-"11","人身事故","Human-related accident","사상사고","人身事故","人身事故"
+"11","人身事故","Personal injury accident","사상사고","人身事故","人身事故"
 "12","車両故障","Car problem",,,
 "13","安全確認","Safety check","안전 확인","安全确认","安全確認"
 "14","信号装置点検","Signal inspection",,,
@@ -52,3 +52,4 @@
 "54","架線に支障物","Obstacle on overhead cables","가선 장애물","架空线上有障碍物","輸電線上有障礙物"
 "55","お客さま対応",,,,
 "56","乗客トラブル","Passenger trouble","승객 트러블","乘客问题","乘客問題"
+"57","乗務員確認","Crew confirmation","승무원 확인","乘务员相关确认","乘務員相關確認"
