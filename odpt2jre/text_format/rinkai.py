@@ -8,7 +8,7 @@ from .field_string import embed_field, find_all_field
 
 def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
-    if not info.train_information_status:
+    if not info.train_information_status or info.train_information_text.ja=="ただいまの時間は、運行情報のサービス提供時間外です。":
         return [common.normal_operation(info)]
 
     result:TrainInformation = TrainInformation(info)
