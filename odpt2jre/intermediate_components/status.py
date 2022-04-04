@@ -441,7 +441,7 @@ class Status:
             case StatusEnum.UNKNOWN:
                 result.append(self.build_modifiers_ja("に") + "{unknown status}。")
             case StatusEnum.NORMAL:
-                result.append("概ね平常通り運転しています。")
+                result.append("平常運転しています。")
             case StatusEnum.DELAY:
                 result.append(self.build_modifiers_ja("に") + "遅れがでています。")
             case StatusEnum.OPERATION_STOP:
