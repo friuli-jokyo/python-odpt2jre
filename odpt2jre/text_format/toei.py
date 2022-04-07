@@ -120,6 +120,8 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         result.status_main.enum = StatusEnum.SOME_TRAIN_CANCEL
     elif "運転を見合わせ" in main_status_text:
         result.status_main.enum = StatusEnum.OPERATION_STOP
+    elif "行先" in main_status_text and "変更" in main_status_text:
+        result.status_main.enum = StatusEnum.DESTINATION_CHANGE
 
     if "一部" in main_status_text:
         result.status_main.modifiers[0].some_train = True
