@@ -110,7 +110,7 @@ class Cause(MultiLanguageExpression, header=""):
         if self.causes and (cause := self.causes[0].format_ko()):
             if self.companies and (company := self.companies[0].format_ko()):
                 result.append( company ) # {CompanyName}
-                result.append("내에서") #TODO
+                result.append("내에서") # 内で
                 result.append("발생한") # 発生した
             elif self.lines and (line := self.lines[0].format_ko()):
                 result.append( line ) # {LineName}
