@@ -86,9 +86,8 @@ class StatusModifier:
                     result.append(self.direction.format_ja()+"行き列車")
             elif self.direction.is_circle():
                 if self.some_train:
-                    result.append(self.direction.format_ja()+"一部電車")
-                else:
-                    result.append(self.direction.format_ja()+"電車")
+                    result.append("一部")
+                result.append(self.direction.format_ja()+"電車")
             else:
                 result.append(self.direction.format_ja())
                 if self.some_train:
