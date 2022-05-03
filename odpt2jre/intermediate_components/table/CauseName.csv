@@ -7,7 +7,7 @@
 "6","強風予測","Strong wind forecast",,,
 "7","車両点検","Car inspection","차량점검","车辆检查","車輛檢查"
 "8","お客さま転落","Person on tracks","승객낙하","乘客掉落","乘客墜落"
-"9","ホーム扉点検","Platform gate inspection",,,
+"9","ホーム扉点検","Platform gate inspection","스크린도어 점검","台门检查","月台門檢查"
 "10","乗務員急病","Crew illness","승무원의 급병","乘务员患急病","乘務人員突發急病"
 "11","人身事故","Personal injury accident","사상사고","人身事故","人身事故"
 "12","車両故障","Train car malfunction","차량 고장","车辆故障","車輛故障"
@@ -57,3 +57,5 @@
 "59","停止位置修正","Adjusting stop point","정차위치 수정","停车位置修正","停車位置修正"
 "61","強風","Strong wind","강풍","强风","強風"
 "62","カモシカ衝突","Antelope collision","일본산양과의 충돌","和羚羊相撞","與髭羚衝撞"
+"63","荷物挟まり","Baggage caught in door","문에 짐 끼임","行李被夹住","夾到行李"
+"64","濃霧","Dense fog","안개","浓雾","濃霧"
