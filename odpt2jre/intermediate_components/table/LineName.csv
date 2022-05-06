@@ -98,16 +98,17 @@
 "Toei.NipporiToneri","日暮里舎人ライナー","Nippori,Toneri Liner","닛포리,도네리 라이너","日暮里、舍人线","日暮里、舍人線"
 "Toei.Oedo","都営大江戸線","Toei Ōedo Line","도에이지하철 오에도선","都营大江户线","都營大江戶線"
 "Toei.Shinjuku","都営新宿線","Toei Shinjuku Line","도에이지하철 신주쿠선","都营新宿线","都營新宿線"
-"TokyoMetro","東京メトロ線","Tōkyō Metro Line",,,
-"TokyoMetro.Chiyoda","東京メトロ千代田線","Tōkyō Metro Chiyoda Line",,,
-"TokyoMetro.Fukutoshin","東京メトロ副都心線","Tōkyō Metro Fukutoshin Line",,,
-"TokyoMetro.Ginza","東京メトロ銀座線","Tōkyō Metro Ginza Line",,,
-"TokyoMetro.Hanzomon","東京メトロ半蔵門線","Tōkyō Metro Hanzōmon Line",,,
-"TokyoMetro.Hibiya","東京メトロ日比谷線","Tōkyō Metro Hibiya Line",,,
-"TokyoMetro.Marunouchi","東京メトロ丸ノ内線","Tōkyō Metro Marunouchi Line",,,
-"TokyoMetro.Namboku","東京メトロ南北線","Tōkyō Metro Namboku Line",,,
-"TokyoMetro.Tozai","東京メトロ東西線","Tōkyō Metro Tōzai Line",,,
-"TokyoMetro.Yurakucho","東京メトロ有楽町線","Tōkyō Metro Yūrakuchō Line",,,
+"Toei.Subway","都営地下鉄線","Toei Subway Line","도에이지하철선","都营地铁线","都營地鐵線"
+"TokyoMetro","東京メトロ線","Tōkyō Metro Line","도쿄메트로선","东京Metro线","東京Metro線"
+"TokyoMetro.Chiyoda","東京メトロ千代田線","Tōkyō Metro Chiyoda Line","도쿄메트로 치요다선","东京Metro千代田线","東京Metro千代田線"
+"TokyoMetro.Fukutoshin","東京メトロ副都心線","Tōkyō Metro Fukutoshin Line","도쿄메트로 후쿠토신선","东京Metro副都心线","東京Metro副都心線"
+"TokyoMetro.Ginza","東京メトロ銀座線","Tōkyō Metro Ginza Line","도쿄메트로 긴자선","东京Metro银座线","東京Metro銀座線"
+"TokyoMetro.Hanzomon","東京メトロ半蔵門線","Tōkyō Metro Hanzōmon Line","도쿄메트로 한조몬선","东京Metro半藏门线","東京Metro半藏門線"
+"TokyoMetro.Hibiya","東京メトロ日比谷線","Tōkyō Metro Hibiya Line","도쿄메트로 히비야선","东京Metro日比谷线","東京Metro日比谷線"
+"TokyoMetro.Marunouchi","東京メトロ丸ノ内線","Tōkyō Metro Marunouchi Line","도쿄메트로 마루노우치선","东京Metro丸之内线","東京Metro丸之內線"
+"TokyoMetro.Namboku","東京メトロ南北線","Tōkyō Metro Namboku Line","도쿄메트로 난보쿠선","东京Metro南北线","東京Metro南北線"
+"TokyoMetro.Tozai","東京メトロ東西線","Tōkyō Metro Tōzai Line","도쿄메트로 도자이선","东京Metro东西线","東京Metro東西線"
+"TokyoMetro.Yurakucho","東京メトロ有楽町線","Tōkyō Metro Yūrakuchō Line","도쿄메트로 유라쿠초선","东京Metro有乐町线","東京Metro有樂町線"
 "Tokyu","東急線","Tōkyū Line",,,
 "Tokyu.DenEnToshi","東急田園都市線","Tōkyū Den-en-toshi Line",,,
 "Tokyu.Ikegami","東急池上線","Tōkyū Ikegami Line",,,
