@@ -44,9 +44,9 @@ pip install git+https://github.com/friuli-jokyo/python-odpt2jre
       "id": "INBOUND_AND_OUTBOUND",
       "ja": "上下線",
       "en": "Inbound and outbound lines",
-      "ko": "",
-      "zh-Hans": "",
-      "zh-Hant": ""
+      "ko": "상하행선",
+      "zh-Hans": "上下行线",
+      "zh-Hant": "上下行線"
    },
    "section": {
       "ja": "全線",
