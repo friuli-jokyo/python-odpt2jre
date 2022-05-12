@@ -79,7 +79,7 @@ class StatusEnum(StringEnum):
             case StatusEnum.NULL:
                 return ""
             case StatusEnum.UNKNOWN:
-                return "{unknwon status}"
+                return "{unknown status}"
             case StatusEnum.NORMAL:
                 return "Normal operation"
             case StatusEnum.DELAY:
