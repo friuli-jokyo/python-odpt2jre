@@ -138,9 +138,13 @@ class BetweenStations(MultiLanguageExpression, header="BetweenSta"):
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"东京～新宿站间"``
         """
-        return ""
+        station_names = [station.format_zh_CN() for station in self._stations]
+        if separation:
+            return " ～ ".join(station_names)+" 站间"
+        else:
+            return "～".join(station_names)+"站间"
 
     def format_zh_TW(self, separation: bool = False) -> str:
         """
