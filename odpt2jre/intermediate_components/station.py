@@ -59,9 +59,9 @@ class SingleStation(MultiLanguageExpression, header="SingleSta"):
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"东京站"``
         """
-        return ""
+        return self._station.format_ko()+"站"
 
     def format_zh_TW(self, separation: bool = False) -> str:
         """
