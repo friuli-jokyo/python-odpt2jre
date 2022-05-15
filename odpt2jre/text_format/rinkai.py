@@ -19,8 +19,17 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     if len(info_text) >= 1 and (match := re.fullmatch(r"(.+?)(の影響で|のため)(.+?)",info_text[0])):
         info_text = [ match[3], match[1]+"の影響で" ] + info_text[1:]
     if len(info_text) >= 1:
+        if info_text[0].startswith("運転を見合わせていましたが"):
+            result.status_occasion.enum = StatusEnum.OPERATION_RESUMED
+            for field in find_all_field(info_text[0]):
+                match field[0]:
+                    case ClockTime.header:
+                        result.time_resume = ClockTime(field[1])
+
         if info_text[0].endswith("遅れがでています") or info_text[0].endswith("ダイヤが乱れています"):
             result.status_main.enum = StatusEnum.DELAY
+        elif info_text[0].endswith("運転を見合わせています") and result.status_occasion.enum != StatusEnum.OPERATION_RESUMED:
+            result.status_main.enum = StatusEnum.OPERATION_STOP
     if len(info_text) >= 1:
         if match := re.search( f"({LineName.regrex})との直通運転を中止して、", info_text[0] ):
             if result.status_main.enum == StatusEnum.NULL:
@@ -43,7 +52,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         for field in field_list:
             match field[0]:
                 case LineName.header:
-                    if result.cause:
+                    if result.cause and field[1] != "[Line:TWR.Rinkai]":
                         result.cause.lines.append(LineName(field[1]))
                 case SingleStation.header:
                     if result.cause:
