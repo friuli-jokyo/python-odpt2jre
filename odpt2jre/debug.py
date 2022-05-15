@@ -13,13 +13,15 @@ def gen_odpt_info(line:str, text:str) -> odpt.TrainInformation:
         "@context": "http://vocab.odpt.org/context_odpt.jsonld",
         "odpt:trainInformationText": {
             "ja": "平常通り運転しています。"
+        },
+        "odpt:trainInformationStatus": {
+            "ja":"デバッグ"
         }
     })
     result.date = datetime.now()
     result.railway = line
     result.operator = line.split(".")[0]
     result.train_information_text.ja = text
-    result.train_information_status = {"ja":"異常"}
 
     return result
 
