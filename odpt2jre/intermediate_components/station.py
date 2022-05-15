@@ -73,9 +73,9 @@ class SingleStation(MultiLanguageExpression, header="SingleSta"):
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"東京站"``
         """
-        return ""
+        return self._station.format_ko()+"站"
 
 class BetweenStations(MultiLanguageExpression, header="BetweenSta"):
 
