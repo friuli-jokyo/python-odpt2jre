@@ -48,7 +48,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                 for field in find_all_field(match[2]):
                     match field[0]:
                         case BetweenStations.header:
-                            stopSections.append( BetweenStations(field[1])._args )
+                            stopSections.append( BetweenStations(field[1]).args )
 
                 for stopSection in stopSections:
                     n_sections:list[list[str]] = []
