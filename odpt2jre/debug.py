@@ -29,4 +29,4 @@ def gen_jre_info(line:str, text:str) -> list[dict[str,object]]:
 
     odpt_info = gen_odpt_info(line=line,text=text)
 
-    return [ info.to_dict() for info in from_odpt_list([odpt_info]) ]
+    return [ dict(info.to_dict()) for info in from_odpt_list([odpt_info]) ]
