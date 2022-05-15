@@ -32,6 +32,10 @@ class MultiLanguageExpression(ABC):
         else:
             return type(self)(field=self._field)
 
+    @property
+    def args(cls) -> list[str]:
+        return cls._args
+
     @classmethod
     @property
     def header(cls) -> str:
