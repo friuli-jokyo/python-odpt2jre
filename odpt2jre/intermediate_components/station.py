@@ -120,7 +120,7 @@ class BetweenStations(MultiLanguageExpression, header="BetweenSta"):
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"도쿄～신주쿠역간"``
         """
         station_names = [station.format_ko() for station in self._stations]
         if separation:
