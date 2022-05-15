@@ -156,9 +156,13 @@ class BetweenStations(MultiLanguageExpression, header="BetweenSta"):
         Returns
         -------
         str
-            e.g. #TODO
+            e.g. ``"東京～新宿站之間"``
         """
-        return ""
+        station_names = [station.format_zh_TW() for station in self._stations]
+        if separation:
+            return " ～ ".join(station_names)+" 站之間"
+        else:
+            return "～".join(station_names)+"站之間"
 
     def to_dict(self) -> MultiLanguageDict:
         result:MultiLanguageDict = {
