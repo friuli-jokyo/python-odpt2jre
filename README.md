@@ -65,7 +65,7 @@ pip install git+https://github.com/friuli-jokyo/python-odpt2jre
    },
    "infoStatusIcon": "CIRCLE",
    "infoText": {
-      "ja": "りんかい線は、概ね平常通り運転しています。",
+      "ja": "りんかい線は、平常運転しています。",
       "en": "The Rinkai Line has normal operation."
    },
    "rawText": {
