@@ -279,3 +279,5 @@ class TrainInformation:
 
         if self.cause:
             result += " "+self.cause.format_ko()
+
+        return result # TODO
