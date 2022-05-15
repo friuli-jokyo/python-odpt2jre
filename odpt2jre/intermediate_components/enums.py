@@ -1,5 +1,7 @@
 from enum import Enum, auto
 
+__all__ = ["StringEnum","auto"]
+
 class StringEnum(Enum):
 
     @classmethod
