@@ -45,8 +45,6 @@ class ClockTime(MultiLanguageExpression, header="CLK"):
     def __eq__(self, __o: object) -> bool:
         if isinstance(__o, type(self)):
             return self.hour == __o.hour and self.minute == __o.minute
-        if __o == None:
-            return False
         raise NotImplementedError
 
     def __bool__(self) -> bool:

@@ -144,8 +144,6 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
     def __eq__(self, __o: object) -> bool:
         if isinstance(__o, type(self)):
             return self.to_dict() == __o.to_dict()
-        if __o == None:
-            return False
         raise NotImplementedError
 
     def format_ja(self) -> str:
