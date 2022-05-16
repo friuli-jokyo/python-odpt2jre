@@ -8,7 +8,7 @@ from odpttraininfo.odpt_components import MultiLanguageString
 
 from .direction import Direction
 from .station import BetweenStations
-from .output_dict import TrainInformationDict
+from .output_dict import TrainInformationDict, remove_unimportant
 
 from .common import concat_ja
 
@@ -58,6 +58,16 @@ class TrainInformation:
             self.line_body = LineName("[Line:Debug]")
             self.date = datetime.now()
 
+    def __eq__(self, __o: object) -> bool:
+        if isinstance(__o, type(self)):
+            self_dict = remove_unimportant(self.to_dict())
+            __o_dict = remove_unimportant(__o.to_dict())
+            for key in self_dict.keys() & __o_dict.keys():
+                if self_dict.get(key, None) != __o_dict.get(key, None):
+                    return False
+            return True
+        raise NotImplementedError
+
     @property
     def status_enum_header(self) -> StatusEnum:
         if self.status_occasion:
@@ -104,6 +114,14 @@ class TrainInformation:
                     return section
                 case _:
                     pass
+
+    @classmethod
+    def list_diff(cls, new: list[TrainInformation], old: list[TrainInformation]) -> tuple[list[TrainInformation], list[TrainInformation]]:
+
+        added = [info_new for info_new in new if info_new not in old]
+        removed = [info_old for info_old in old if info_old not in new]
+
+        return added, removed
 
     def to_dict(self) -> TrainInformationDict:
 
