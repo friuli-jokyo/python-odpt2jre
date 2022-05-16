@@ -1,5 +1,6 @@
 from datetime import datetime
 import odpttraininfo as odpt
+from .intermediate_components.output_dict import TrainInformationDict
 from .convert import from_odpt_list
 
 
@@ -25,8 +26,8 @@ def gen_odpt_info(line:str, text:str) -> odpt.TrainInformation:
 
     return result
 
-def gen_jre_info(line:str, text:str) -> list[dict[str,object]]:
+def gen_jre_info(line:str, text:str) -> list[TrainInformationDict]:
 
     odpt_info = gen_odpt_info(line=line,text=text)
 
-    return [ dict(info.to_dict()) for info in from_odpt_list([odpt_info]) ]
+    return [ info.to_dict() for info in from_odpt_list([odpt_info]) ]
