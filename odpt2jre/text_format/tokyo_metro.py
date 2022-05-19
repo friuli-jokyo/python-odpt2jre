@@ -176,9 +176,10 @@ def divide_stop_resume( info:TrainInformation, text:str ,stop:bool = True ):
     other_list:list[str] = []
     some_cancel:bool = False
 
-    other_suggest_list:list[str] = ["快速運転","女性専用車","急行運転"]
+    other_suggest_list:list[str] = ["快速運転","女性専用車両","女性専用車","急行運転"]
     for suggest in other_suggest_list:
         if suggest in text:
+            text = text.replace(suggest,"")
             other_list.append(suggest)
 
     liner_list:list[str] = ["ＴＨＬＩＮＥＲ","Ｓ−ＴＲＡＩＮ"]
