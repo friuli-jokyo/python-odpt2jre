@@ -50,8 +50,8 @@ def embed_field(text:str) -> str:
     text = DirectionEnum.embed_field(text)
 
     # 方面付き路線
-    text = re.sub( f"\\[Line:(.+?)\\]（({Direction.regrex})）", r"[Line:\1,\2]", text )
-    text = re.sub( f"\\[Line:(.+?)\\] ({Direction.regrex})", r"[Line:\1,\2]", text )
+    text = re.sub( f"\\[Line:(.+?)\\]（({Direction.regex})）", r"[Line:\1,\2]", text )
+    text = re.sub( f"\\[Line:(.+?)\\] ({Direction.regex})", r"[Line:\1,\2]", text )
 
     # 駅間
     text = re.sub( f"({STATION})駅?[〜～]({STATION})駅?[〜～]({STATION})駅?間?", r"[BetweenSta:\1,\2,\3]", text )

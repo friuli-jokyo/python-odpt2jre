@@ -31,7 +31,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         elif info_text[0].endswith("運転を見合わせています") and result.status_occasion.enum != StatusEnum.OPERATION_RESUMED:
             result.status_main.enum = StatusEnum.OPERATION_STOP
     if len(info_text) >= 1:
-        if match := re.search( f"({LineName.regrex})との直通運転を中止して、", info_text[0] ):
+        if match := re.search( f"({LineName.regex})との直通運転を中止して、", info_text[0] ):
             if result.status_main.enum == StatusEnum.NULL:
                 result.status_main.enum = StatusEnum.DIRECT_STOP
                 result.status_main.modifiers[0].lines.append(LineName(match[1]))

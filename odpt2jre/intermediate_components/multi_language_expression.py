@@ -43,7 +43,7 @@ class MultiLanguageExpression(ABC):
 
     @classmethod
     @property
-    def regrex(cls) -> str:
+    def regex(cls) -> str:
         return str(f"\\[{cls.header}:([\\[\\]\\:\\.\\-\\_a-zA-Z0-9]+?)\\]")
 
     @abstractmethod

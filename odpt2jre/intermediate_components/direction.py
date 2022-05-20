@@ -153,7 +153,7 @@ class Direction(MultiLanguageExpression, header="Direction"):
     def __init__(self, field: str) -> None:
         super().__init__(field)
         if len(self._args)==1:
-            if re.fullmatch( StationName.regrex, self._args[0] ):
+            if re.fullmatch( StationName.regex, self._args[0] ):
                 self.enum = DirectionEnum.FOR_STATION
                 self._station = StationName(self._args[0])
             else:
