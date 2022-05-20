@@ -130,15 +130,39 @@ class Cause(MultiLanguageExpression, header=""):
         Returns
         -------
         str
-            e.g. ``"#TODO"```
+            e.g. ``"受东京站确认异常音的影响"``
         """
-        return ""
+        result: list[str] = []
+        if self.causes and (cause := self.causes[0].format_zh_CN()):
+            result.append("受")
+            if self.companies and (company := self.companies[0].format_zh_CN()):
+                result.append( company+"内" ) # {CompanyName}での
+            elif self.lines and (line := self.lines[0].format_zh_CN()):
+                result.append( line+"内" ) # {LineName}での
+            elif self.sections and (section := self.sections[0].format_zh_CN(separation=True)):
+                result.append( section ) # {BetweenSta}での
+            result.append( cause+"的影响" ) # {cause}の影響で
+            return "".join(result)
+        else:
+            return ""
 
     def format_zh_TW(self) -> str:
         """
         Returns
         -------
         str
-            e.g. ``"#TODO"```
+            e.g. ``"因東京站確認異常音的影響"``
         """
-        return ""
+        result: list[str] = []
+        if self.causes and (cause := self.causes[0].format_zh_TW()):
+            result.append("因")
+            if self.companies and (company := self.companies[0].format_zh_TW()):
+                result.append( company+"內的" ) # {CompanyName}での
+            elif self.lines and (line := self.lines[0].format_zh_TW()):
+                result.append( line+"內的" ) # {LineName}での
+            elif self.sections and (section := self.sections[0].format_zh_TW(separation=True)):
+                result.append( section ) # {BetweenSta}での
+            result.append( cause+"的影響" ) # {cause}の影響で
+            return "".join(result)
+        else:
+            return ""
