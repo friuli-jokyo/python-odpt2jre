@@ -4,14 +4,14 @@ from .common import concat_ja
 from .direction import Direction, DirectionEnum
 from .line import LineName
 from .multi_language_expression import MultiLanguageExpression
-from .station import BetweenStations, OrdinalDirectionFromStaton
+from .station import BetweenStations, OrdinalDirectionFromStation
 
 
 class StatusModifier:
 
     still: bool = False
     lines: list[LineName]
-    sections: list[BetweenStations|OrdinalDirectionFromStaton]
+    sections: list[BetweenStations|OrdinalDirectionFromStation]
     direction: Optional[Direction] = None
     some_train: bool = False
     others: list[str]
@@ -43,7 +43,7 @@ class StatusModifier:
         match obj:
             case LineName():
                 self.lines += [obj]
-            case BetweenStations() | OrdinalDirectionFromStaton():
+            case BetweenStations() | OrdinalDirectionFromStation():
                 self.sections += [obj]
             case _:
                 pass
@@ -58,7 +58,7 @@ class StatusModifier:
                     match section:
                         case BetweenStations():
                             result.append("・")
-                        case OrdinalDirectionFromStaton():
+                        case OrdinalDirectionFromStation():
                             result.append("、")
 
         if result:

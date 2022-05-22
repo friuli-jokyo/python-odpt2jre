@@ -178,7 +178,7 @@ class BetweenStations(MultiLanguageExpression, header="BetweenSta"):
             result["zh-Hant"] = zh_TW
         return result
 
-class OrdinalDirectionFromStaton(MultiLanguageExpression, header="OrdinalFromSta"):
+class OrdinalDirectionFromStation(MultiLanguageExpression, header="OrdinalFromSta"):
     """
     Note
     ----
