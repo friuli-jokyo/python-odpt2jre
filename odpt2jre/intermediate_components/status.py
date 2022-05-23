@@ -331,6 +331,12 @@ class Status:
         self.last_statuses = []
         self._placement = placement
 
+    def __bool__(self) -> bool:
+        if self.enum == StatusEnum.NULL:
+            return False
+        else:
+            return True
+
     def DELAY_AND_CANCEL(self) -> None:
         self.enum = StatusEnum.DELAY
         self.sub_status = Status()
