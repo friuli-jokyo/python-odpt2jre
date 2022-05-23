@@ -70,12 +70,14 @@ class TrainInformation:
 
     @property
     def status_enum_header(self) -> StatusEnum:
+        if self.status_main.enum == StatusEnum.NORMAL:
+            return StatusEnum.NORMAL
         if self.status_occasion:
             match self.status_occasion.enum:
                 case StatusEnum.OPERATION_RESUMED:
                     return StatusEnum.OPERATION_RESUMED
                 case StatusEnum.DIRECT_RESUMED:
-                    return StatusEnum.DIRECT_RESUMED
+                    return StatusEnum.NORMAL
                 case _:
                     pass
         if self.time_resume:
@@ -115,6 +117,13 @@ class TrainInformation:
                 case _:
                     pass
 
+    @property
+    def is_normal(self) -> bool:
+        if self.status_enum_header == StatusEnum.NORMAL:
+            return True
+        else:
+            return False
+
     @classmethod
     def list_diff(cls, new: list[TrainInformation], old: list[TrainInformation]) -> tuple[list[TrainInformation], list[TrainInformation]]:
 
@@ -129,6 +138,9 @@ class TrainInformation:
         self.status_occasion.supplement()
         for sub in self.statuses_sub:
             sub.supplement()
+
+        if not self.occasion and self.status_main.enum == StatusEnum.NULL:
+            self.status_main.enum = StatusEnum.NORMAL
 
         if not self.text_info.ja:
             self.text_info.ja = self.build_ja()
@@ -154,14 +166,15 @@ class TrainInformation:
             "date": self.date.isoformat(),
             "valid": None,
         }
-        if self.cause:
-            result["cause"] = self.cause.causes[0].to_dict()
-        if self.section:
-            result["section"] = self.section.to_dict()
-        if self.time_occur:
-            result["causeTime"] = self.time_occur.format_24h()
-        if self.time_resume:
-            result["resumeTime"] = self.time_resume.format_24h()
+        if not self.is_normal:
+            if self.cause:
+                result["cause"] = self.cause.causes[0].to_dict()
+            if self.section:
+                result["section"] = self.section.to_dict()
+            if self.time_occur:
+                result["causeTime"] = self.time_occur.format_24h()
+            if self.time_resume:
+                result["resumeTime"] = self.time_resume.format_24h()
         if self.valid:
             result["valid"] = self.valid.isoformat()
 
@@ -172,6 +185,9 @@ class TrainInformation:
         result:str = ""
 
         result += self.line_body.format_ja() + "は、"
+
+        if self.is_normal:
+            return result + "平常運転しています。"
 
         if not self.time_resume and self.status_main.enum == StatusEnum.OPERATION_STOP:
             if self.time_occur:
@@ -208,9 +224,6 @@ class TrainInformation:
                         result += "、"
                 case _:
                     pass
-        else:
-            if self.status_main.enum == StatusEnum.NULL:
-                self.status_main.enum = StatusEnum.NORMAL
 
         if self.status_main:
             result += self.status_main.build_ja()
@@ -237,11 +250,12 @@ class TrainInformation:
 
         result:str = ""
 
+        if self.is_normal:
+            return f"The {self.line_body.format_en()} has normal operation."
+
         if self.occasion:
             status = self.status_occasion
         else:
-            if self.status_main.enum == StatusEnum.NULL:
-                return ""
             status = self.status_main
 
         pre_line, post_line, post_script = status.build_main_en()
