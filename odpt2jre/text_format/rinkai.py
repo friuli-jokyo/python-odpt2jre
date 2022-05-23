@@ -31,15 +31,24 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         elif info_text[0].endswith("運転を見合わせています") and result.status_occasion.enum != StatusEnum.OPERATION_RESUMED:
             result.status_main.enum = StatusEnum.OPERATION_STOP
     if len(info_text) >= 1:
-        if match := re.search( f"({LineName.regex})との直通運転を中止して、", info_text[0] ):
+        if match := re.search( f"({LineName.regex})との直通運転を(中止し|見合わせていましたが、直通運転を再開し)", info_text[0] ):
             if result.status_main.enum == StatusEnum.NULL:
-                result.status_main.enum = StatusEnum.DIRECT_STOP
-                result.status_main.modifiers[0].lines.append(LineName(match[1]))
+                if match[3] == "中止し":
+                    result.status_main.enum = StatusEnum.DIRECT_STOP
+                    result.status_main.modifiers[0].lines.append(LineName(match[1]))
+                else:
+                    result.status_occasion.enum = StatusEnum.DIRECT_RESUMED
+                    result.status_occasion.modifiers[0].lines.append(LineName(match[1]))
+
             else:
                 status = Status(StatusPlacement.MAIN)
-                status.enum = StatusEnum.DIRECT_STOP
+                if match[3] == "中止し":
+                    status.enum = StatusEnum.DIRECT_STOP
+                else:
+                    status.enum = StatusEnum.DIRECT_RESUMED
                 status.modifiers[0].lines.append(LineName(match[1]))
                 result.statuses_sub.append( status )
+
 
     if len(info_text) >= 2 and "影響" in info_text[1]:
         field_list = find_all_field(info_text[1])
