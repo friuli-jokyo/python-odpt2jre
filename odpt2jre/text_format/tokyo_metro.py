@@ -88,7 +88,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     elif "中止しています" in main_status_text:
         divide_stop_resume(result, main_status_text, True)
     elif re.fullmatch( r"直通運転を中止していましたが、.+?再開しました", main_status_text):
-        pass
+        result.status_occasion.enum = StatusEnum.DIRECT_RESUMED
     elif "全線で運転を見合わせています" in main_status_text:
         result.status_main.enum = StatusEnum.OPERATION_STOP
     elif "折返し運転を行っています" in main_status_text:
