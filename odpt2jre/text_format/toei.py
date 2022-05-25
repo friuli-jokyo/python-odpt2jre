@@ -30,7 +30,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         cause_text = ""
         main_status_text = match[1]
     else:
-        return [common.normal_operation(info)]
+        return [common.normal_operation(info,remove_macrons=True)]
 
     if match := re.fullmatch( r"(.*?)運?転?を?見合わせていましたが(.*?)運転を?再開し(.+?)", main_status_text ):
         main_status_text = match[3]

@@ -41,7 +41,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         main_status_text = match[1]
         sub_text_list = match[2].split("。")
     else:
-        return [common.normal_operation(info)]
+        return [common.normal_operation(info,remove_macrons=True)]
 
     if match := re.fullmatch( r"(.*?)運転を見合わせていましたが、(.*?)運転を再開し(.+?)", main_status_text ):
         main_status_text = match[3]
