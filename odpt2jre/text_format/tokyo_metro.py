@@ -115,9 +115,9 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
             for field in find_all_field(sub_text):
                 if field[0] == BetweenStations.header:
                     sub.modifiers[0].sections.append(BetweenStations(field[1]))
-        elif subMatch := re.search( r"()この影響で(.+)を中止しています" ,sub_text) or\
+        elif subMatch := re.search( r"なお、(.+)は再開しましたが、(.+)を中止しています" ,sub_text) or\
 			(subMatch := re.search( r"なお、(.+)は再開しました()" ,sub_text)) or\
-			(subMatch := re.search( r"なお、(.+)は再開しましたが、(.+)を中止しています" ,sub_text)):
+			(subMatch := re.search( r"()この影響で(.+)を中止しています" ,sub_text)):
             if subMatch[1]:
                 divide_stop_resume(result, subMatch[1], False)
             if subMatch[2]:
