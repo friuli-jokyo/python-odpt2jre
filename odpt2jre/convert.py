@@ -2,7 +2,8 @@
 import odpttraininfo as odpt
 
 from .intermediate_components.train_information import TrainInformation
-from .text_format import jr_east, rinkai, tama_monorail, toei, tokyo_metro, yokohama_municipal
+from .text_format import (jr_east, rinkai, tama_monorail, toei, tokyo_metro,
+                          tokyu, yokohama_municipal)
 
 
 def from_odpt_list(info_list: list[odpt.TrainInformation]) -> list[TrainInformation]:
@@ -19,6 +20,8 @@ def from_odpt_list(info_list: list[odpt.TrainInformation]) -> list[TrainInformat
                 result += rinkai.to_jre(single_info)
             case "TokyoMetro":
                 result += tokyo_metro.to_jre(single_info)
+            case "Tokyu":
+                result += tokyu.to_jre(single_info)
             case "Toei":
                 result += toei.to_jre(single_info)
             case "TamaMonorail":
