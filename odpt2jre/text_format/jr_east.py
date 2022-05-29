@@ -30,12 +30,31 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     for info_text in info_text_list:
 
         gen = TrainInformation(info)
+        gen.status_main.enum = StatusEnum.NOTICE
         gen.text_raw.ja = embed_field( info_text )
         gen.text_info.ja = info_text
-        if "上野東京ラインは、" in info_text:
+        if "[Line:JR-East.UenoTokyo]は、" in info_text:
             gen.line_header = LineName("JR-East.UenoTokyo")
 
-
+        if re.search( r"運転再開見込は.+?に変更になりました", gen.text_raw.ja ):
+            gen.status_main.enum = StatusEnum.OPERATION_WILL_RESUME
+        elif re.search( r"運転再開は.+?を見込んでいます", gen.text_raw.ja ):
+            gen.status_main.enum = StatusEnum.OPERATION_WILL_RESUME
+        elif re.search( r"運転を再開しました", gen.text_raw.ja ):
+            gen.status_main.enum = StatusEnum.OPERATION_RESUMED
+        else:
+            main_status_text = gen.text_raw.ja.split("。")[0]
+            if main_status_text.endswith("遅れがでています"):
+                gen.status_main.enum = StatusEnum.DELAY
+            elif main_status_text.endswith("遅れと運休がでています"):
+                gen.status_main.enum = StatusEnum.DELAY
+            elif main_status_text.endswith("運休となっています"):
+                gen.status_main.enum = StatusEnum.SOME_TRAIN_CANCEL
+                gen.status_main.modifiers[0].some_train = True
+            elif re.search(r"直通運転(（.*?）|)を中止しています", main_status_text):
+                gen.status_main.enum = StatusEnum.DIRECT_STOP
+            elif main_status_text.endswith("運転を見合わせています"):
+                gen.status_main.enum = StatusEnum.OPERATION_STOP
 
         result += [gen]
 
