@@ -30,6 +30,10 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
             result.status_main.enum = StatusEnum.DELAY
         elif info_text[0].endswith("運転を見合わせています") and result.status_occasion.enum != StatusEnum.OPERATION_RESUMED:
             result.status_main.enum = StatusEnum.OPERATION_STOP
+    if len(info_text) >= 3 and "なお、" in info_text[2]:
+        if info_text[2].endswith("一部列車に運休が出ています"):
+            result.status_main.enum = StatusEnum.SOME_TRAIN_CANCEL
+            result.status_main.modifiers[0].some_train = True
     if len(info_text) >= 1:
         if match := re.search( f"({LineName.regex})との直通運転を(中止し|見合わせていましたが、直通運転を再開し)", info_text[0] ):
             if result.status_main.enum == StatusEnum.NULL:
