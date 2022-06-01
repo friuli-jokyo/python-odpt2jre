@@ -116,6 +116,9 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         result.status_main.enum = StatusEnum.DELAY
         if "運休" in main_status_text:
             result.status_main.DELAY_AND_CANCEL()
+        elif "行先" in main_status_text and "変更" in main_status_text:
+            result.status_main.sub_status = Status()
+            result.status_main.sub_status.enum = StatusEnum.DESTINATION_CHANGE
     elif "運休" in main_status_text:
         result.status_main.enum = StatusEnum.SOME_TRAIN_CANCEL
     elif "運転を見合わせ" in main_status_text:
