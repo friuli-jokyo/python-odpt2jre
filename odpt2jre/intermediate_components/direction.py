@@ -182,7 +182,7 @@ class Direction(MultiLanguageExpression, header="Direction"):
             case _:
                 return self.enum.format_ja()
 
-    def format_en(self) -> str:
+    def format_en(self, in_sentence:bool = False) -> str:
         """
         Returns
         -------
@@ -194,7 +194,10 @@ class Direction(MultiLanguageExpression, header="Direction"):
                 return ""
             case DirectionEnum.FOR_STATION:
                 if self._station:
-                    return self.enum.format_en()+" "+self._station.format_en()
+                    if in_sentence:
+                        return "bound for "+self._station.format_en()
+                    else:
+                        return self.enum.format_en()+" "+self._station.format_en()
                 else:
                     return ""
             case _:
@@ -218,7 +221,7 @@ class Direction(MultiLanguageExpression, header="Direction"):
             case _:
                 return self.enum.format_ko()
 
-    def format_zh_CN(self) -> str:
+    def format_zh_CN(self, in_sentence:bool = False) -> str:
         """
         Returns
         -------
@@ -230,13 +233,16 @@ class Direction(MultiLanguageExpression, header="Direction"):
                 return ""
             case DirectionEnum.FOR_STATION:
                 if self._station:
-                    return self._station.format_zh_CN()+self.enum.format_zh_CN()
+                    if in_sentence:
+                        return self._station.format_zh_CN()+"方面"
+                    else:
+                        return self._station.format_zh_CN()+self.enum.format_zh_CN()
                 else:
                     return ""
             case _:
                 return self.enum.format_zh_CN()
 
-    def format_zh_TW(self) -> str:
+    def format_zh_TW(self, in_sentence:bool = False) -> str:
         """
         Returns
         -------
@@ -248,7 +254,10 @@ class Direction(MultiLanguageExpression, header="Direction"):
                 return ""
             case DirectionEnum.FOR_STATION:
                 if self._station:
-                    return self._station.format_zh_TW()+self.enum.format_zh_TW()
+                    if in_sentence:
+                        return self._station.format_zh_TW()+"方面"
+                    else:
+                        return self._station.format_zh_TW()+self.enum.format_zh_TW()
                 else:
                     return ""
             case _:
