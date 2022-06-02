@@ -98,8 +98,8 @@ def find_all_field(text: str) -> list[list[str]]:
 
     return result
 
-def find_field(text: str) -> list[str]:
-    try:
-        return find_all_field(text)[0]
-    except:
-        return []
+def find_field(text: str, header:Optional[str] = None ) -> list[str]:
+    for field in find_all_field(text):
+        if field[0] == header or header is None:
+            return field
+    return []
