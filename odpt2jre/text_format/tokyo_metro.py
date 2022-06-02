@@ -32,21 +32,21 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
     info_text = result.text_raw.ja
 
-    if match := re.fullmatch( r"(.+?)のため、(.+?)。(.*)", info_text ):
-        cause_text = match[1]
-        main_status_text = match[2]
-        sub_text_list = match[3].split("。")
-    elif match := re.fullmatch( r"(.+?)。(.*)", info_text ):
+    if _match := re.fullmatch( r"(.+?)のため、(.+?)。(.*)", info_text ):
+        cause_text = _match[1]
+        main_status_text = _match[2]
+        sub_text_list = _match[3].split("。")
+    elif _match := re.fullmatch( r"(.+?)。(.*)", info_text ):
         cause_text = ""
-        main_status_text = match[1]
-        sub_text_list = match[2].split("。")
+        main_status_text = _match[1]
+        sub_text_list = _match[2].split("。")
     else:
         return [common.normal_operation(info,remove_macrons=True)]
 
-    if match := re.fullmatch( r"(.*?)運転を見合わせていましたが、(.*?)運転を再開し(.+?)", main_status_text ):
-        main_status_text = match[3]
+    if _match := re.fullmatch( r"(.*?)運転を見合わせていましたが、(.*?)運転を再開し(.+?)", main_status_text ):
+        main_status_text = _match[3]
         result.status_occasion.enum = StatusEnum.OPERATION_RESUMED
-        if field := find_field(match[2]):
+        if field := find_field(_match[2]):
             match field[0]:
                 case ClockTime.header:
                     result.time_resume = ClockTime(field[1])
@@ -98,9 +98,9 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         result.status_main.modifiers[0].some_train = True
 
     for i,sub_text in enumerate(sub_text_list):
-        if match := re.fullmatch( r"(.+?)(只今、.+?振替輸送を実施しています)", sub_text ):
-            sub_text_list[i] = match[1]
-            sub_text_list.append(match[2])
+        if _match := re.fullmatch( r"(.+?)(只今、.+?振替輸送を実施しています)", sub_text ):
+            sub_text_list[i] = _match[1]
+            sub_text_list.append(_match[2])
 
     for sub_text in sub_text_list:
         if "見込" in sub_text:

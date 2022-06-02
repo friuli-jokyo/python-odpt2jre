@@ -16,8 +16,8 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
     info_text = result.text_raw.ja.split("。")
 
-    if len(info_text) >= 1 and (match := re.fullmatch(r"(.+?)(の影響で|のため)(.+?)",info_text[0])):
-        info_text = [ match[3], match[1]+"の影響で" ] + info_text[1:]
+    if len(info_text) >= 1 and (_match := re.fullmatch(r"(.+?)(の影響で|のため)(.+?)",info_text[0])):
+        info_text = [ _match[3], _match[1]+"の影響で" ] + info_text[1:]
     if len(info_text) >= 1:
         if info_text[0].startswith("運転を見合わせていましたが"):
             result.status_occasion.enum = StatusEnum.OPERATION_RESUMED
@@ -35,22 +35,22 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
             result.status_main.enum = StatusEnum.SOME_TRAIN_CANCEL
             result.status_main.modifiers[0].some_train = True
     if len(info_text) >= 1:
-        if match := re.search( f"({LineName.regex})との直通運転を(中止し|見合わせていましたが、直通運転を再開し)", info_text[0] ):
+        if _match := re.search( f"({LineName.regex})との直通運転を(中止し|見合わせていましたが、直通運転を再開し)", info_text[0] ):
             if result.status_main.enum == StatusEnum.NULL:
-                if match[3] == "中止し":
+                if _match[3] == "中止し":
                     result.status_main.enum = StatusEnum.DIRECT_STOP
-                    result.status_main.modifiers[0].lines.append(LineName(match[1]))
+                    result.status_main.modifiers[0].lines.append(LineName(_match[1]))
                 else:
                     result.status_occasion.enum = StatusEnum.DIRECT_RESUMED
-                    result.status_occasion.modifiers[0].lines.append(LineName(match[1]))
+                    result.status_occasion.modifiers[0].lines.append(LineName(_match[1]))
 
             else:
                 status = Status(StatusPlacement.MAIN)
-                if match[3] == "中止し":
+                if _match[3] == "中止し":
                     status.enum = StatusEnum.DIRECT_STOP
                 else:
                     status.enum = StatusEnum.DIRECT_RESUMED
-                status.modifiers[0].lines.append(LineName(match[1]))
+                status.modifiers[0].lines.append(LineName(_match[1]))
                 result.statuses_sub.append( status )
 
 

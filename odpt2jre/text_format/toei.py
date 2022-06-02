@@ -23,29 +23,29 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
     info_text = result.text_raw.ja
 
-    if match := re.fullmatch( r".+?は、(.+?)(のため|の影響)(.+?)", info_text ):
-        cause_text = match[1]
-        main_status_text = match[3]
-    elif match := re.fullmatch( r".+?は、(.+?)", info_text ):
+    if _match := re.fullmatch( r".+?は、(.+?)(のため|の影響)(.+?)", info_text ):
+        cause_text = _match[1]
+        main_status_text = _match[3]
+    elif _match := re.fullmatch( r".+?は、(.+?)", info_text ):
         cause_text = ""
-        main_status_text = match[1]
+        main_status_text = _match[1]
     else:
         return [common.normal_operation(info,remove_macrons=True)]
 
-    if match := re.fullmatch( r"(.*?)運?転?を?見合わせていましたが(.*?)運転を?再開し(.+?)", main_status_text ):
-        main_status_text = match[3]
+    if _match := re.fullmatch( r"(.*?)運?転?を?見合わせていましたが(.*?)運転を?再開し(.+?)", main_status_text ):
+        main_status_text = _match[3]
         result.status_occasion.enum = StatusEnum.OPERATION_RESUMED
-        for field in find_all_field(match[1]):
+        for field in find_all_field(_match[1]):
             match field[0]:
                 case BetweenStations.header:
                     result.status_occasion.modifiers[0].sections.append(BetweenStations(field[1]))
-        if match[2].endswith("は") and not result.status_occasion.modifiers[0].sections:
+        if _match[2].endswith("は") and not result.status_occasion.modifiers[0].sections:
             result.status_main.enum = StatusEnum.OPERATION_STOP
             result.status_occasion.enum = StatusEnum.NULL
             try:
                 sections = copy.deepcopy(staList[ result.line_header.id ])
                 stopSections:list[list[str]] = []
-                for field in find_all_field(match[2]):
+                for field in find_all_field(_match[2]):
                     match field[0]:
                         case BetweenStations.header:
                             stopSections.append( BetweenStations(field[1]).args )
@@ -78,7 +78,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
             except:
                 pass
         else:
-            if field := find_field(match[2]):
+            if field := find_field(_match[2]):
                 match field[0]:
                     case ClockTime.header:
                         result.time_resume = ClockTime(field[1])

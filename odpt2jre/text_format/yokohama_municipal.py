@@ -15,9 +15,9 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
     info_text = result.text_raw.ja
 
-    if match := re.fullmatch( r"(.+?)のため(.+?)", info_text ):
-        cause_text = match[1]
-        info_text = match[2]
+    if _match := re.fullmatch( r"(.+?)のため(.+?)", info_text ):
+        cause_text = _match[1]
+        info_text = _match[2]
 
         for field in find_all_field(cause_text):
             match field[0]:

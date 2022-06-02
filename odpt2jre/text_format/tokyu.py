@@ -26,21 +26,21 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
     info_text = result.text_raw.ja
 
-    if match := re.fullmatch( r".+?は、(.+?)の影響により、(.+?)。(.*)", info_text ):
-        cause_text = match[1]
-        main_status_text = match[2]
-        sub_text_list = match[3].split("。")
-    elif match := re.fullmatch( r".+?は、(.+?)。(.*)", info_text ):
+    if _match := re.fullmatch( r".+?は、(.+?)の影響により、(.+?)。(.*)", info_text ):
+        cause_text = _match[1]
+        main_status_text = _match[2]
+        sub_text_list = _match[3].split("。")
+    elif _match := re.fullmatch( r".+?は、(.+?)。(.*)", info_text ):
         cause_text = ""
-        main_status_text = match[1]
-        sub_text_list = match[2].split("。")
+        main_status_text = _match[1]
+        sub_text_list = _match[2].split("。")
     else:
         return [common.normal_operation(info)]
 
-    if match := re.fullmatch( r"(.*?)運転を見合わせていましたが、(.*?)運転を再開(.+?)", main_status_text ):
+    if _match := re.fullmatch( r"(.*?)運転を見合わせていましたが、(.*?)運転を再開(.+?)", main_status_text ):
         main_status_text = sub_text_list.pop(0)
         result.status_occasion.enum = StatusEnum.OPERATION_RESUMED
-        if field := find_field(match[2]):
+        if field := find_field(_match[2]):
             match field[0]:
                 case ClockTime.header:
                     result.time_resume = ClockTime(field[1])
@@ -86,9 +86,9 @@ def text2status(text:str, lineID:str) -> tuple[Optional[Status], Optional[Status
     sub_status = False
 
     if "遅れ" in text or "運休" in text:
-        if match := re.fullmatch( r"(.*?(遅れ|運休)と)(.+?)", text ):
-            text = match[1]
-            secondary_text = match[3]
+        if _match := re.fullmatch( r"(.*?(遅れ|運休)と)(.+?)", text ):
+            text = _match[1]
+            secondary_text = _match[3]
 
             if "遅れ" in secondary_text:
                 secondary_status = Status(StatusPlacement.MAIN)
@@ -135,12 +135,12 @@ def text2status(text:str, lineID:str) -> tuple[Optional[Status], Optional[Status
                 primary_status.modifiers[0].others.append(other)
     elif "行先変更" in text or "行き先変更" in text:
         primary_status.enum = StatusEnum.DESTINATION_CHANGE
-    elif match := re.fullmatch( r"(.+?)で折返し運転を行っています", text):
+    elif _match := re.fullmatch( r"(.+?)で折返し運転を行っています", text):
         primary_status.enum = StatusEnum.OPERATION_STOP
         primary_status.modifiers[0].sections = []
         try:
             sections = copy.deepcopy(staList[ lineID ])
-            formatted_text = re.sub(r"\[(SingleSta|BetweenSta):(.+?\])\]",r"\2",match[1]).replace("駅","").replace("間","").replace("内","")
+            formatted_text = re.sub(r"\[(SingleSta|BetweenSta):(.+?\])\]",r"\2",_match[1]).replace("駅","").replace("間","").replace("内","")
             stopSections = [ re.split("[〜～\\,]",x) for x in formatted_text.split("、") ]
 
             for stopSection in stopSections:
