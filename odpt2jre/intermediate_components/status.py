@@ -339,7 +339,7 @@ class Status:
 
     def DELAY_AND_CANCEL(self) -> None:
         self.enum = StatusEnum.DELAY
-        self.sub_status = Status()
+        self.sub_status = Status(StatusPlacement.WITH)
         self.sub_status.enum = StatusEnum.SOME_TRAIN_CANCEL
 
     def supplement(self):
