@@ -572,6 +572,9 @@ class Status:
 
         match self.enum:
             case StatusEnum.DIRECT_STOP:
-                return "We have stopped direct operation to the %s." % self.modifiers[0].lines[0].format_en()
+                try:
+                    return "We have stopped direct operation to the %s." % self.modifiers[0].lines[0].format_en()
+                except IndexError:
+                    return ""
             case _:
                 return ""
