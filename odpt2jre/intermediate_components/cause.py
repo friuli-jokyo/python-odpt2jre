@@ -1,8 +1,13 @@
+from __future__ import annotations
+
+from typing import Optional
+
 from .common import concat_ja
 from .company import CompanyName
 from .line import LineName
+from .multi_language_expression import (MultiLanguageExpression,
+                                        MultiLanguageExpressionWithTable)
 from .station import BetweenStations, SingleStation
-from .multi_language_expression import MultiLanguageExpression, MultiLanguageExpressionWithTable
 
 
 class CauseName(MultiLanguageExpressionWithTable, header="Cause"):
@@ -14,13 +19,15 @@ class Cause(MultiLanguageExpression, header=""):
     companies: list[CompanyName]
     lines: list[LineName]
     sections: list[SingleStation|BetweenStations]
+    sub_cause: Optional[Cause] = None
 
-    def __init__(self, cause:str) -> None:
+    def __init__(self, cause:Optional[str] = None) -> None:
         self.causes = []
         self.companies = []
         self.lines = []
         self.sections = []
-        self.causes.append(CauseName(cause))
+        if cause:
+            self.causes.append(CauseName(cause))
 
     def format_ja(self) -> str:
         """
@@ -62,6 +69,9 @@ class Cause(MultiLanguageExpression, header=""):
                     temp_causes.append(name)
             if temp_causes:
                 result.append(concat_ja(temp_causes))
+                if self.sub_cause:
+                    result.append("および")
+                    result.append(self.sub_cause.format_ja())
                 result.append("の影響で、")
                 return "".join(result)
             else:
