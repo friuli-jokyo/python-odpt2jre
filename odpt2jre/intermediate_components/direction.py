@@ -136,7 +136,7 @@ class DirectionEnum(StringEnum):
 
     @classmethod
     def embed_field(cls, text:str) -> str:
-        for enum in cls:
+        for enum in sorted(cls, reverse=True, key= lambda x: len(x.format_ja())):
             if enum == DirectionEnum.NULL:
                 continue
             if enum == DirectionEnum.FOR_STATION:
