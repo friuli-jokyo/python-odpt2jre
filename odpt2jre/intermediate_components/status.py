@@ -474,6 +474,14 @@ class Status:
                             lines_texts.append(line_text)
                     result.append( concat_ja(lines_texts)+"への" )
                 result.append("直通運転を再開しました。")
+            case StatusEnum.ROUTE_CHANGE:
+                if lines := self.find_all_lines():
+                    lines_texts:list[str] = []
+                    for line in lines:
+                        if line_text := line.format_ja():
+                            lines_texts.append(line_text)
+                    result.append( concat_ja(lines_texts) )
+                    result.append("の線路を使用し運転します。")
             case StatusEnum.STOP | StatusEnum.RESUMED:
                 if others := self.find_all_others():
                     others_texts:list[str] = []
@@ -559,6 +567,11 @@ class Status:
                     post_script = "Direct operation stop: %s." % ",".join([ line.format_en() for line in self.find_all_lines()])
                 case StatusEnum.DIRECT_RESUMED:
                     pass # TODO research
+                case StatusEnum.ROUTE_CHANGE:
+                    try:
+                        status_text = "is currently operating on the %s route in limited areas" % self.find_all_lines()[0].format_en()
+                    except IndexError:
+                        status_text = "has {invalid} operation"
                 case StatusEnum.SOME_TRAIN_CANCEL:
                     pre_line, post_line, post_status = modifier.build_main_en("of", True)
                     status_text = "is out of service"
@@ -573,7 +586,15 @@ class Status:
         match self.enum:
             case StatusEnum.DIRECT_STOP:
                 try:
-                    return "We have stopped direct operation to the %s." % self.modifiers[0].lines[0].format_en()
+                    if len(self.find_all_lines()) > 1 or self.find_all_lines()[0].has_direction:
+                        return "We are suspending our direct train operation into the %s." % " and the ".join([line.format_en(in_sentence=True) for line in self.find_all_lines()])
+                    else:
+                        return "We have stopped direct operation to the %s." % self.find_all_lines()[0].format_en()
+                except IndexError:
+                    return ""
+            case StatusEnum.DIRECT_RESUMED:
+                try:
+                    return "We have resumed our direct train operation into the %s." % self.find_all_lines()[0].format_en()
                 except IndexError:
                     return ""
             case _:

@@ -2,7 +2,9 @@ import re
 
 import odpttraininfo as odpt
 
-from .field_string import embed_field
+from odpt2jre.intermediate_components.snippet import SnippetEnum
+
+from .field_string import embed_field, find_all_field, find_field
 from ..intermediate_components import *
 from . import common
 
@@ -14,9 +16,9 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     result:list[TrainInformation] = []
 
     raw_info_text = info.train_information_text.ja
-    line_name_regrex = r"(車|線|ライン|」|）)は、"
-    split_count = len( re.findall(line_name_regrex, raw_info_text) )
-    split_match = re.fullmatch( r"(.*?。|)" + ( r"([^。]*" + line_name_regrex + r".+。)" )*split_count ,raw_info_text )
+    line_name_regex = r"(車|線|ライン|」|）)は、"
+    split_count = len( re.findall(line_name_regex, raw_info_text) )
+    split_match = re.fullmatch( r"(.*?。|)" + ( r"([^。]*" + line_name_regex + r".+。)" )*split_count ,raw_info_text )
 
     if split_match:
         if split_match[1]:
@@ -30,33 +32,160 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     for info_text in info_text_list:
 
         gen = TrainInformation(info)
-        gen.status_main.enum = StatusEnum.NOTICE
         gen.text_raw.ja = embed_field( info_text )
         gen.text_info.ja = info_text
-        if "[Line:JR-East.UenoTokyo]は、" in info_text:
+
+        main_text = gen.text_raw.ja.split("。")[0]
+
+        if "上野東京ラインは、" in main_text:
             gen.line_header = LineName("JR-East.UenoTokyo")
 
-        if re.search( r"運転再開見込は.+?に変更になりました", gen.text_raw.ja ):
-            gen.status_main.enum = StatusEnum.OPERATION_WILL_RESUME
-        elif re.search( r"運転再開は.+?を見込んでいます", gen.text_raw.ja ):
-            gen.status_main.enum = StatusEnum.OPERATION_WILL_RESUME
-        elif re.search( r"運転を再開しました", gen.text_raw.ja ):
-            gen.status_main.enum = StatusEnum.OPERATION_RESUMED
+        if _match := re.fullmatch( r".+?は、(.+の影響で、|)(.+?)", main_text ):
+            if _match[1]:
+                cause_temp = Cause()
+                for field in find_all_field(_match[1]):
+                    match field[0]:
+                        case ClockTime.header:
+                            gen.time_occur = ClockTime(field[1])
+                        case CauseName.header:
+                            cause_temp.causes.append(CauseName(field[1]))
+                            if gen.cause:
+                                gen.cause.sub_cause = cause_temp
+                            else:
+                                gen.cause = cause_temp
+                            cause_temp = Cause()
+                        case CompanyName.header:
+                            cause_temp.companies.append(CompanyName(field[1]))
+                        case LineName.header:
+                            cause_temp.lines.append(LineName(field[1]))
+                        case SingleStation.header:
+                            cause_temp.sections.append(SingleStation(field[1]))
+                        case BetweenStations.header:
+                            cause_temp.sections.append(BetweenStations(field[1]))
+
+            if occasion_match := re.fullmatch( r"(.+?)いましたが、(.+?)再開し(.+?)", _match[2]):
+                main_status_text = occasion_match[3]
+                if occasion_match[1].endswith("運転を見合わせて"):
+                    gen.status_occasion.enum = StatusEnum.OPERATION_RESUMED
+                elif occasion_match[1].endswith("直通運転を中止して"):
+                    gen.status_occasion.enum = StatusEnum.DIRECT_RESUMED
+                if field := find_field(occasion_match[2], ClockTime.header):
+                    gen.time_resume = ClockTime(field[1])
+
+                gen.status_occasion.modifiers = gen_modifiers(occasion_match[1])
+            else:
+                main_status_text = _match[2]
+
+            gen.status_main = gen_status(main_status_text, StatusPlacement.MAIN)
         else:
-            main_status_text = gen.text_raw.ja.split("。")[0]
-            if main_status_text.endswith("遅れがでています"):
-                gen.status_main.enum = StatusEnum.DELAY
-            elif main_status_text.endswith("遅れと運休がでています"):
-                gen.status_main.enum = StatusEnum.DELAY
-            elif main_status_text.endswith("運休となっています"):
-                gen.status_main.enum = StatusEnum.SOME_TRAIN_CANCEL
-                gen.status_main.modifiers[0].some_train = True
-            elif re.search(r"直通運転(（.*?）|)を中止しています", main_status_text):
-                gen.status_main.enum = StatusEnum.DIRECT_STOP
-            elif main_status_text.endswith("運転を見合わせています"):
-                gen.status_main.enum = StatusEnum.OPERATION_STOP
+            gen.status_main.enum = StatusEnum.NOTICE
+
+        for sub_text in gen.text_raw.ja.split("。")[1:]:
+            if time := re.search( r"運転再開見込は(.+?)に変更になりました", sub_text ):
+                if field := find_field(time[1], ClockTime.header):
+                    gen.time_resume = ClockTime(field[1])
+                    gen.time_resume_changed = True
+            elif time := re.search( r"運転再開は(.+?)を見込んでいます", sub_text ):
+                if field := find_field(time[1], ClockTime.header):
+                    gen.time_resume = ClockTime(field[1])
+            elif "運転再開見込は立っていません" in sub_text:
+                gen.time_resume_not_known = True
+            elif "まもなく運転を再開できる見込みです" in sub_text:
+                gen.will_resume_soon = True
+            elif "係員が現地に向かっています" in sub_text:
+                gen.sentences_sub.append(Snippet(SnippetEnum.STAFF_IS_ON_THE_WAY))
+            elif stations := re.fullmatch( r"(.+?)には停車しません", sub_text ):
+                snippet = Snippet(SnippetEnum.NOT_STOP_AT_STATION)
+                for field in find_all_field(stations[1]):
+                    match field[0]:
+                        case SingleStation.header:
+                            snippet.stations.append(SingleStation(field[1]))
+                gen.sentences_sub.append(snippet)
+            elif "目的地まで通常より大幅に時間を要する場合があります" in sub_text:
+                gen.sentences_sub.append(Snippet(SnippetEnum.MAY_TAKE_LONGER_TIME))
+            else:
+                if sub_status := gen_status(sub_text, StatusPlacement.MAIN):
+                    gen.sentences_sub.append(sub_status)
 
         result += [gen]
 
     return result
 
+def gen_status(text:str, placement:StatusPlacement) -> Status:
+
+    ret:Status = Status(placement)
+    modifier_text:str = ""
+
+    if _match := re.fullmatch( r"(.*?)(遅れ|行先変更|運休)と(.+)", text ):
+        ret.sub_status = gen_status(_match[3], StatusPlacement.WITH)
+        match _match[2]:
+            case "遅れ":
+                ret.enum = StatusEnum.DELAY
+            case "行先変更":
+                ret.enum = StatusEnum.DESTINATION_CHANGE
+            case "運休":
+                ret.enum = StatusEnum.SOME_TRAIN_CANCEL
+            case _:
+                pass
+        modifier_text = _match[1]
+    elif _match := re.fullmatch( r"(.*?)(遅れ|行先変更|運休)がでています", text ):
+        match _match[2]:
+            case "遅れ":
+                ret.enum = StatusEnum.DELAY
+            case "行先変更":
+                ret.enum = StatusEnum.DESTINATION_CHANGE
+            case "運休":
+                ret.enum = StatusEnum.SOME_TRAIN_CANCEL
+            case _:
+                pass
+        modifier_text = _match[1]
+    elif _match := re.fullmatch( r"(.*?)直通運転を中止しています", text ):
+        ret.enum = StatusEnum.DIRECT_STOP
+        modifier_text = _match[1]
+    elif _match := re.fullmatch( r"(.*?)直通運転を再開しました", text ):
+        ret.enum = StatusEnum.DIRECT_RESUMED
+        modifier_text = _match[1]
+    elif _match := re.fullmatch( r"(.*?)運転を見合わせています", text ):
+        ret.enum = StatusEnum.OPERATION_STOP
+        modifier_text = _match[1]
+    elif _match := re.fullmatch( r"(.*?)運転を再開しました", text ):
+        ret.enum = StatusEnum.OPERATION_RESUMED
+        modifier_text = _match[1]
+    elif _match := re.fullmatch( r"(.*?)折返し運転を行っています", text ):
+        ret.enum = StatusEnum.TURN_BACK_OPERATION
+        modifier_text = _match[1]
+    elif _match := re.fullmatch( r"(.*?)の線路を使用し運転します", text ):
+        ret.enum = StatusEnum.ROUTE_CHANGE
+        modifier_text = _match[1]
+
+    if modifier_text:
+        ret.modifiers = gen_modifiers(modifier_text)
+
+    return ret
+
+def gen_modifiers(text:str) -> list[StatusModifier]:
+
+    ret: list[StatusModifier] = []
+
+    for modifier_text in text.split("および"):
+        modifier = StatusModifier()
+        if "一部" in modifier_text:
+            modifier.some_train = True
+        if "現在も" in modifier_text:
+            modifier.still = True
+        for field in find_all_field(modifier_text):
+            match field[0]:
+                case LineName.header:
+                    modifier.lines.append(LineName(field[1]))
+                case BetweenStations.header:
+                    modifier.sections.append(BetweenStations(field[1]))
+                case OrdinalDirectionFromStation.header:
+                    modifier.sections.append(OrdinalDirectionFromStation(field[1]))
+                case Direction.header:
+                    modifier.direction = Direction(field[1])
+        if modifier:
+            ret.append(modifier)
+    if ret:
+        return ret
+    else:
+        return [StatusModifier()]

@@ -11,6 +11,12 @@ class LineName(MultiLanguageExpressionWithTable, header="Line"):
         if len(self._args) >= 2:
             self._direction = Direction(self._args[1])
 
+    @property
+    def has_direction(self) -> bool:
+        if self._direction:
+            return True
+        return False
+
     def format_ja(self) -> str:
         if self._direction:
             return super().format_ja()+"（%s）" % self._direction.format_ja()

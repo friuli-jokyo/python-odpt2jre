@@ -6,6 +6,8 @@ from typing import Optional
 import odpttraininfo as odpt
 from odpttraininfo.odpt_components import MultiLanguageString
 
+from odpt2jre.intermediate_components.snippet import Snippet
+
 from .direction import Direction
 from .station import BetweenStations
 from .output_dict import TrainInformationDict, remove_unimportant
@@ -25,13 +27,15 @@ class TrainInformation:
 
     status_main: Status
     status_occasion: Status
-    statuses_sub: list[Status]
+    sentences_sub: list[Status|Snippet]
 
     cause: Optional[Cause] = None
 
     time_occur: Optional[ClockTime] = None
     time_resume: Optional[ClockTime] = None
     time_resume_changed:bool = False
+    time_resume_not_known:bool = False
+    will_resume_soon:bool = False
 
     line_header: LineName
     line_body: LineName
@@ -45,7 +49,7 @@ class TrainInformation:
 
         self.status_main = Status(StatusPlacement.MAIN)
         self.status_occasion = Status(StatusPlacement.OCCASION)
-        self.statuses_sub = []
+        self.sentences_sub = []
 
         if info:
             self.line_header = LineName(info.get_line())
@@ -136,8 +140,9 @@ class TrainInformation:
 
         self.status_main.supplement()
         self.status_occasion.supplement()
-        for sub in self.statuses_sub:
-            sub.supplement()
+        for sub in self.sentences_sub:
+            if isinstance(sub, Status):
+                sub.supplement()
 
         if not self.occasion and self.status_main.enum == StatusEnum.NULL:
             self.status_main.enum = StatusEnum.NORMAL
@@ -234,10 +239,12 @@ class TrainInformation:
                     result += "運転再開見込は"+self.time_resume.format_ja()+"頃に変更になりました。"
                 else:
                     result += "運転再開は"+self.time_resume.format_ja()+"頃を見込んでいます。"
-            else:
-                pass # result += "運転再開見込みは立っていません。"
+            elif self.time_resume_not_known:
+                result += "運転再開見込みは立っていません。"
+            elif self.will_resume_soon:
+                result += "まもなく運転を再開できる見込みです。"
 
-        for sub in self.statuses_sub:
+        for sub in self.sentences_sub:
             if StatusEnum.SOME_TRAIN_CANCEL in self.status_main.find_all_enums():
                 if sub.enum == StatusEnum.SOME_TRAIN_CANCEL:
                     continue
@@ -287,10 +294,17 @@ class TrainInformation:
         result += "."
 
         if not self.occasion and self.time_resume:
-            result += "It is expected to resume operation around %s." % self.time_resume.format_en()
+            result += " It is expected to resume operation around %s." % self.time_resume.format_en()
+        elif self.time_resume_not_known:
+            result += " We don't know when our train operation will be resumed."
+        elif self.will_resume_soon:
+            result += " The train operation will be resumed shortly."
 
-        for sub in self.statuses_sub:
-            result += " "+sub.build_sub_en()
+        for sub in self.sentences_sub:
+            if isinstance(sub, Status):
+                result += " "+sub.build_sub_en()
+            if isinstance(sub, Snippet):
+                result += " "+sub.build_en()
         if post_script:
             result += " "+post_script
 

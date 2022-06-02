@@ -51,7 +51,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                 else:
                     status.enum = StatusEnum.DIRECT_RESUMED
                 status.modifiers[0].lines.append(LineName(_match[1]))
-                result.statuses_sub.append( status )
+                result.sentences_sub.append( status )
 
 
     if len(info_text) >= 2 and "影響" in info_text[1]:

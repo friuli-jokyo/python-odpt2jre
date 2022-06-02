@@ -111,7 +111,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                     result.time_resume_changed = True
         elif "運転本数を減らして運転" in sub_text or "一部列車が運休" in sub_text:
             sub = Status()
-            result.statuses_sub.append(sub)
+            result.sentences_sub.append(sub)
             for field in find_all_field(sub_text):
                 if field[0] == BetweenStations.header:
                     sub.modifiers[0].sections.append(BetweenStations(field[1]))
@@ -197,7 +197,7 @@ def divide_stop_resume( info:TrainInformation, text:str ,stop:bool = True ):
             status = info.status_main
         else:
             status = Status(StatusPlacement.MAIN)
-            info.statuses_sub.append(status)
+            info.sentences_sub.append(status)
         if stop:
             status.enum = StatusEnum.DIRECT_STOP
         else:
@@ -210,7 +210,7 @@ def divide_stop_resume( info:TrainInformation, text:str ,stop:bool = True ):
             status = info.status_main
         else:
             status = Status(StatusPlacement.MAIN)
-            info.statuses_sub.append(status)
+            info.sentences_sub.append(status)
         if stop:
             status.enum = StatusEnum.STOP
         else:
@@ -222,4 +222,4 @@ def divide_stop_resume( info:TrainInformation, text:str ,stop:bool = True ):
         status = Status(StatusPlacement.MAIN)
         status.enum = StatusEnum.SOME_TRAIN_CANCEL
         status.modifiers[0].some_train = True
-        info.statuses_sub.append(status)
+        info.sentences_sub.append(status)

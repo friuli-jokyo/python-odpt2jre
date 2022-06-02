@@ -68,14 +68,14 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     if status_main:
         result.status_main = status_main
     if status_sub:
-        result.statuses_sub.append(status_sub)
+        result.sentences_sub.append(status_sub)
 
     for sub_text in sub_text_list:
         main_stat, sub_stat = text2status(sub_text, info.get_line())
         if main_stat:
-            result.statuses_sub.append(main_stat)
+            result.sentences_sub.append(main_stat)
         if sub_stat:
-            result.statuses_sub.append(sub_stat)
+            result.sentences_sub.append(sub_stat)
 
     return [result]
 
