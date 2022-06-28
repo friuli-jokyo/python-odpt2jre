@@ -141,14 +141,14 @@ def text2status(text:str, lineID:str) -> tuple[Optional[Status], Optional[Status
         try:
             sections = copy.deepcopy(staList[ lineID ])
             formatted_text = re.sub(r"\[(SingleSta|BetweenSta):(.+?\])\]",r"\2",_match[1]).replace("駅","").replace("間","").replace("内","")
-            stopSections = [ re.split("[〜～\\,]",x) for x in formatted_text.split("、") ]
+            operatingSections = [ re.split("[〜～\\,]",x) for x in formatted_text.split("、") ]
 
-            for stopSection in stopSections:
+            for operatingSection in operatingSections:
                 n_sections:list[list[str]] = []
                 for section in sections:
-                    if stopSection[0] in section and stopSection[-1] in section:
-                        start = section.index(stopSection[0])
-                        end = section.index(stopSection[-1])
+                    if operatingSection[0] in section and operatingSection[-1] in section:
+                        start = section.index(operatingSection[0])
+                        end = section.index(operatingSection[-1])
                         if end<start:
                             start, end = end, start
                         if start!=0:

@@ -44,18 +44,18 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
             result.status_occasion.enum = StatusEnum.NULL
             try:
                 sections = copy.deepcopy(staList[ result.line_header.id ])
-                stopSections:list[list[str]] = []
+                operatingSections:list[list[str]] = []
                 for field in find_all_field(_match[2]):
                     match field[0]:
                         case BetweenStations.header:
-                            stopSections.append( BetweenStations(field[1]).args )
+                            operatingSections.append( BetweenStations(field[1]).args )
 
-                for stopSection in stopSections:
+                for operatingSection in operatingSections:
                     n_sections:list[list[str]] = []
                     for section in sections:
-                        if stopSection[0] in section and stopSection[-1] in section:
-                            start = section.index(stopSection[0])
-                            end = section.index(stopSection[-1])
+                        if operatingSection[0] in section and operatingSection[-1] in section:
+                            start = section.index(operatingSection[0])
+                            end = section.index(operatingSection[-1])
                             if end<start:
                                 start, end = end, start
                             if start!=0:

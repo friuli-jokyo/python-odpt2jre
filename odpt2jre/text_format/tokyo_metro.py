@@ -127,22 +127,22 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                 try:
                     sections = copy.deepcopy(staList[ result.line_header.id ])
                     formatted_text = re.sub(r"\[(SingleSta|BetweenSta):(.+?\])\]",r"\2",subMatch[1]).replace("駅","").replace("間","").replace("内","")
-                    stopSections = [ re.split("[〜～\\,]",x) for x in formatted_text.split("　") ]
+                    operatingSections = [ re.split("[〜～\\,]",x) for x in formatted_text.split("　") ]
 
-                    for i, stopSection in enumerate(stopSections): # 方南町支線関連(方南町･中野坂上)
-                        if "[Sta:7035]" not in stopSection and "[Sta:7122]" in stopSection:
-                            if stopSection[0]=="[Sta:7122]":
-                                stopSections[i] = ["[Sta:7035]",stopSection[-1]]
+                    for i, operatingSection in enumerate(operatingSections): # 方南町支線関連
+                        if "[Sta:7035]" not in operatingSection and "[Sta:7122]" in operatingSection: # 中野坂上が折返し区間に入っていなくて、方南町が入っている場合 -> 中野坂上で分割
+                            if operatingSection[0]=="[Sta:7122]": # [0]が方南町
+                                operatingSections[i] = ["[Sta:7035]",operatingSection[-1]]
                             else:
-                                stopSections[i] = [stopSection[1],"[Sta:7035]"]
-                            stopSections.append(["[Sta:7035]","[Sta:7122]"])
+                                operatingSections[i] = [operatingSection[1],"[Sta:7035]"]
+                            operatingSections.append(["[Sta:7035]","[Sta:7122]"]) # [中野坂上,方南町]を追加
 
-                    for stopSection in stopSections:
+                    for operatingSection in operatingSections:
                         n_sections:list[list[str]] = []
                         for section in sections:
-                            if stopSection[0] in section and stopSection[-1] in section:
-                                start = section.index(stopSection[0])
-                                end = section.index(stopSection[-1])
+                            if operatingSection[0] in section and operatingSection[-1] in section:
+                                start = section.index(operatingSection[0])
+                                end = section.index(operatingSection[-1])
                                 if end<start:
                                     start, end = end, start
                                 if start!=0:
