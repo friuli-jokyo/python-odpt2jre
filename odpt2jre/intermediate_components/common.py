@@ -2,11 +2,7 @@
 
 def concat_ja( expression_list: list[str]) -> str:
 
-    result_list: list[str] = []
-
-    for expression in expression_list:
-        if expression:
-            result_list.append(expression)
+    result_list: list[str] = [ expression for expression in expression_list if expression ]
 
     match len(result_list):
         case 0:
@@ -20,11 +16,7 @@ def concat_ja( expression_list: list[str]) -> str:
 
 def concat_en( expression_list: list[str]) -> str:
 
-    result_list: list[str] = []
-
-    for expression in expression_list:
-        if expression:
-            result_list.append(expression)
+    result_list: list[str] = [ expression for expression in expression_list if expression ]
 
     match len(result_list):
         case 0:
