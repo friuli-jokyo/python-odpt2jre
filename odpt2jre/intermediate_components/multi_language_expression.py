@@ -4,7 +4,7 @@ import csv
 import os
 import re
 from abc import ABC, abstractmethod
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from .output_dict import MultiLanguageDictWithId
 
@@ -103,6 +103,9 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
     ja: str
     """Japanese text."""
 
+    ja_raw: Optional[str] = None
+    """Japanese raw text"""
+
     en: str
     """English text."""
 
@@ -116,17 +119,19 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
     """Traditional Chinese text."""
 
     _id2text: ClassVar[dict[str,list[str]]]
-    _text2id: ClassVar[dict[str,str]]
+    _text2id: ClassVar[dict[str,list[str]]]
     alias_dict: ClassVar[dict[str,str]]
 
-    def __init__(self, field: str) -> None:
+    def __init__(self, field: str, use_raw_text:bool = True) -> None:
         super().__init__(field)
         if self._args:
             self.id = self._args[0]
         elif id := self._text2id.get(field, None):
-            self.id = id
+            self.id = id[0]
         else:
             self.id = field
+        if use_raw_text and len(self._args) >= 2:
+            self.ja_raw = self._args[1].encode('ascii').decode('unicode-escape')
         if self.id:
             self.ja = self._id2text[self.id][0]
             try:
@@ -150,8 +155,11 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
             return self.to_dict() == __o.to_dict()
         raise NotImplementedError
 
-    def format_ja(self) -> str:
-        return self.ja
+    def format_ja(self, for_dict:bool = False) -> str:
+        if self.ja_raw and not for_dict:
+            return self.ja_raw
+        else:
+            return self.ja
 
     def format_en(self) -> str:
         return self.en
@@ -168,7 +176,7 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
     def to_dict(self) -> MultiLanguageDictWithId:
         result:MultiLanguageDictWithId = {
             "id": self.id,
-            "ja": self.format_ja()
+            "ja": self.format_ja(for_dict=True)
         }
         if self.en:
             result["en"] = self.format_en()
@@ -190,14 +198,16 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
             for row in data:
                 try:
                     cls._id2text[row[0]] = row[1:]
-                    cls._text2id[row[1]] = row[0]
+                    cls._text2id[row[1]] = [row[0]]
                 except IndexError:
                     pass
         with open("{}/table/{}".format(os.path.dirname(__file__), filename_alias), encoding="utf-8") as f:
             data = csv.reader(f)
             for row in data:
                 try:
-                    cls._text2id[row[0]] = row[1]
+                    cls._text2id[row[0]] = [row[1]]
+                    if len(row) >= 3:
+                        cls._text2id[row[0]].append("1")
                     cls.alias_dict[row[0]] = cls._id2text[row[1]][0]
                 except IndexError:
                     pass
@@ -207,7 +217,10 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
     @classmethod
     def embed_field(cls, text:str) -> str:
         for key in sorted(cls._text2id.keys(),key=len,reverse=True):
-            field = f"[{cls._header}:{cls._text2id[key]}]"
+            if len(cls._text2id[key]) >= 2:
+                field = f"[{cls._header}:{cls._text2id[key][0]},{key.encode('unicode-escape').decode('ascii')}]"
+            else:
+                field = f"[{cls._header}:{cls._text2id[key][0]}]"
             text = text.replace(key,field)
 
         return text

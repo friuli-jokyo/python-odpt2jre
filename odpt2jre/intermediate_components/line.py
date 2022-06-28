@@ -7,7 +7,7 @@ class LineName(MultiLanguageExpressionWithTable, header="Line"):
     _direction: Optional[Direction] = None
 
     def __init__(self, field: str) -> None:
-        super().__init__(field)
+        super().__init__(field, use_raw_text=False)
         if len(self._args) >= 2:
             self._direction = Direction(self._args[1])
 
@@ -17,7 +17,7 @@ class LineName(MultiLanguageExpressionWithTable, header="Line"):
             return True
         return False
 
-    def format_ja(self) -> str:
+    def format_ja(self, for_dict:bool = False) -> str:
         if self._direction:
             return super().format_ja()+"（%s）" % self._direction.format_ja()
         else:
