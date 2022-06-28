@@ -460,34 +460,22 @@ class Status:
                 result.append(self.build_modifiers_ja("で") + "折返し運転を行っています。")
             case StatusEnum.DIRECT_STOP:
                 if lines := self.find_all_lines():
-                    lines_texts:list[str] = []
-                    for line in lines:
-                        if line_text := line.format_ja():
-                            lines_texts.append(line_text)
+                    lines_texts:list[str] = [ line_text for line in lines if (line_text := line.format_ja()) ]
                     result.append( concat_ja(lines_texts)+"への" )
                 result.append("直通運転を中止しています。")
             case StatusEnum.DIRECT_RESUMED:
                 if lines := self.find_all_lines():
-                    lines_texts:list[str] = []
-                    for line in lines:
-                        if line_text := line.format_ja():
-                            lines_texts.append(line_text)
+                    lines_texts:list[str] = [ line_text for line in lines if (line_text := line.format_ja()) ]
                     result.append( concat_ja(lines_texts)+"への" )
                 result.append("直通運転を再開しました。")
             case StatusEnum.ROUTE_CHANGE:
                 if lines := self.find_all_lines():
-                    lines_texts:list[str] = []
-                    for line in lines:
-                        if line_text := line.format_ja():
-                            lines_texts.append(line_text)
+                    lines_texts:list[str] = [ line_text for line in lines if (line_text := line.format_ja()) ]
                     result.append( concat_ja(lines_texts) )
                     result.append("の線路を使用し運転します。")
             case StatusEnum.STOP | StatusEnum.RESUMED:
                 if others := self.find_all_others():
-                    others_texts:list[str] = []
-                    for other in others:
-                        if other:
-                            others_texts.append(other)
+                    others_texts:list[str] = [ other for other in others if other ]
                     result.append( concat_ja(others_texts) )
                 else:
                     result.append("{invalid modifier}")
