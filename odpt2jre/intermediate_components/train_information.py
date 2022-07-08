@@ -301,10 +301,11 @@ class TrainInformation:
             result += " The train operation will be resumed shortly."
 
         for sub in self.sentences_sub:
-            if isinstance(sub, Status):
-                result += " "+sub.build_sub_en()
-            if isinstance(sub, Snippet):
-                result += " "+sub.build_en()
+            if isinstance(sub, Status) and (sentence := sub.build_sub_en()):
+                result += " "+sentence
+            if isinstance(sub, Snippet) and (sentence := sub.build_en()):
+                result += " "+sentence
+
         if post_script:
             result += " "+post_script
 
