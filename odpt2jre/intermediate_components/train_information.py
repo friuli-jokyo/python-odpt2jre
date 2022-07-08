@@ -282,11 +282,11 @@ class TrainInformation:
 
         if self.occasion and status.enum == StatusEnum.OPERATION_RESUMED:
             result += " but has resumed operation"
-            if self.status_main.enum == StatusEnum.DELAY:
+            if concat_text := self.status_main.concat_en_enums(accept_single=True):
                 if self.status_main.has_some_train():
-                    result += " but some trains are delayed"
+                    result += " but some trains are " + concat_text
                 else:
-                    result += " but is delayed"
+                    result += " but is " + concat_text
 
         if self.occasion and self.time_resume:
             result += " around "+self.time_resume.format_en()

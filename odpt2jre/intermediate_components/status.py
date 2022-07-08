@@ -494,6 +494,30 @@ class Status:
                 result.append(self.build_modifiers_ja("に") + "{invalid status}。")
         return "".join(result)
 
+    def concat_en_enums(self, accept_single:bool = False) -> str:
+        enum_list = self.find_all_enums()
+        if len(enum_list) <= 0:
+            return ""
+        if not accept_single and len(enum_list) <= 1:
+            return ""
+
+        status_texts: list[str] = []
+        for enum in enum_list:
+            match enum:
+                case StatusEnum.DELAY:
+                    status_texts.append("delayed")
+                case StatusEnum.DESTINATION_CHANGE:
+                    status_texts.append("{unknown}") # TODO
+                case StatusEnum.SOME_TRAIN_CANCEL:
+                    status_texts.append("suspended")
+                case _:
+                    pass
+
+        if status_texts and (concat_text := concat_en(status_texts)):
+            return concat_text
+        else:
+            return ""
+
     def build_main_en(self) -> tuple[str,str,str]:
 
         """
@@ -507,26 +531,11 @@ class Status:
         post_script: str = ""
 
         modifier = self.modifiers[0]
-        id_list = self.find_all_enums()
 
-        if len(id_list)>1:
+        if concat_text := self.concat_en_enums():
             pre_line, post_line, post_status = modifier.build_main_en("of")
             post_line.append("has")
-            valid_status_texts: list[str] = []
-            for id in id_list:
-                match id:
-                    case StatusEnum.DELAY:
-                        valid_status_texts.append("delayed")
-                    case StatusEnum.DESTINATION_CHANGE:
-                        valid_status_texts.append("{unknown}") # TODO
-                    case StatusEnum.SOME_TRAIN_CANCEL:
-                        valid_status_texts.append("suspended")
-                    case _:
-                        pass
-            if valid_status_texts and (concat := concat_en(valid_status_texts)):
-                status_text = concat + " operation"
-            else:
-                return "", "", ""
+            status_text = concat_text + " operation"
         else:
             pre_line, post_line, post_status = ([""],[""],[""])
             match self.enum:
