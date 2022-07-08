@@ -476,7 +476,10 @@ class Status:
             case StatusEnum.STOP | StatusEnum.RESUMED:
                 if others := self.find_all_others():
                     others_texts:list[str] = [ other for other in others if other ]
-                    result.append( concat_ja(others_texts) )
+                    if others_texts and others_texts[0] == "女性専用車":
+                        result.append(self.build_modifiers_ja("で") + concat_ja(others_texts))
+                    else:
+                        result.append( concat_ja(others_texts) )
                 else:
                     result.append("{invalid modifier}")
                 if self.enum == StatusEnum.STOP:
