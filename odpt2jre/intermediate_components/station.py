@@ -100,7 +100,7 @@ class BetweenStations(MultiLanguageExpression, header="BetweenSta"):
         station_names = [station.format_ja() for station in self._stations]
         return "～".join(station_names)+"駅間"
 
-    def format_en(self) -> str:
+    def format_en(self, use_lowercase:bool = False) -> str:
         """
         Returns
         -------
@@ -108,7 +108,10 @@ class BetweenStations(MultiLanguageExpression, header="BetweenSta"):
             e.g. ``"Between Tōkyō and Shinjuku Station"``
         """
         station_names = [station.format_en() for station in self._stations]
-        return "Between " + " and ".join(station_names) + " Station"
+        if use_lowercase:
+            return "between " + " and ".join(station_names) + " station"
+        else:
+            return "Between " + " and ".join(station_names) + " Station"
 
     def format_ko(self, separation: bool = False) -> str:
         """
