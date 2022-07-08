@@ -76,7 +76,9 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
             else:
                 main_status_text = _match[2]
 
-            gen.status_main = gen_status(main_status_text, StatusPlacement.MAIN)
+            gen.status_main, snippet = gen_status(main_status_text, StatusPlacement.MAIN)
+            if snippet:
+                gen.sentences_sub.append(snippet)
         else:
             gen.status_main.enum = StatusEnum.NOTICE
 
@@ -105,63 +107,76 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                 gen.sentences_sub.append(Snippet(SnippetEnum.MAY_TAKE_LONGER_TIME))
             else:
                 if sub_status := gen_status(sub_text, StatusPlacement.MAIN):
-                    gen.sentences_sub.append(sub_status)
+                    gen.sentences_sub.append(sub_status[0])
 
         result += [gen]
 
     return result
 
-def gen_status(text:str, placement:StatusPlacement) -> Status:
+def gen_status(text:str, placement:StatusPlacement) -> tuple[Status, Snippet]:
 
-    ret:Status = Status(placement)
+    ret_status:Status = Status(placement)
+    ret_snippet:Snippet = Snippet(SnippetEnum.NULL)
     modifier_text:str = ""
 
     if _match := re.fullmatch( r"(.*?)(遅れ|行先変更|運休)と(.+)", text ):
-        ret.sub_status = gen_status(_match[3], StatusPlacement.WITH)
+        ret_status.sub_status, _ = gen_status(_match[3], StatusPlacement.WITH)
         match _match[2]:
             case "遅れ":
-                ret.enum = StatusEnum.DELAY
+                ret_status.enum = StatusEnum.DELAY
             case "行先変更":
-                ret.enum = StatusEnum.DESTINATION_CHANGE
+                ret_status.enum = StatusEnum.DESTINATION_CHANGE
             case "運休":
-                ret.enum = StatusEnum.SOME_TRAIN_CANCEL
+                ret_status.enum = StatusEnum.SOME_TRAIN_CANCEL
             case _:
                 pass
         modifier_text = _match[1]
     elif _match := re.fullmatch( r"(.*?)(遅れ|行先変更|運休)がでています", text ):
         match _match[2]:
             case "遅れ":
-                ret.enum = StatusEnum.DELAY
+                ret_status.enum = StatusEnum.DELAY
             case "行先変更":
-                ret.enum = StatusEnum.DESTINATION_CHANGE
+                ret_status.enum = StatusEnum.DESTINATION_CHANGE
             case "運休":
-                ret.enum = StatusEnum.SOME_TRAIN_CANCEL
+                ret_status.enum = StatusEnum.SOME_TRAIN_CANCEL
             case _:
                 pass
         modifier_text = _match[1]
     elif _match := re.fullmatch( r"(.*?)直通運転を中止しています", text ):
-        ret.enum = StatusEnum.DIRECT_STOP
+        ret_status.enum = StatusEnum.DIRECT_STOP
         modifier_text = _match[1]
     elif _match := re.fullmatch( r"(.*?)直通運転を再開しました", text ):
-        ret.enum = StatusEnum.DIRECT_RESUMED
+        ret_status.enum = StatusEnum.DIRECT_RESUMED
         modifier_text = _match[1]
     elif _match := re.fullmatch( r"(.*?)運転を見合わせています", text ):
-        ret.enum = StatusEnum.OPERATION_STOP
+        ret_status.enum = StatusEnum.OPERATION_STOP
         modifier_text = _match[1]
     elif _match := re.fullmatch( r"(.*?)運転を再開しました", text ):
-        ret.enum = StatusEnum.OPERATION_RESUMED
+        ret_status.enum = StatusEnum.OPERATION_RESUMED
         modifier_text = _match[1]
     elif _match := re.fullmatch( r"(.*?)折返し運転を行っています", text ):
-        ret.enum = StatusEnum.TURN_BACK_OPERATION
+        ret_status.enum = StatusEnum.TURN_BACK_OPERATION
         modifier_text = _match[1]
-    elif _match := re.fullmatch( r"(.*?)の線路を使用し運転します", text ):
-        ret.enum = StatusEnum.ROUTE_CHANGE
+    elif _match := re.fullmatch( r"(.*?)の線路を使用し運転し(.+?)", text ):
+        ret_status.enum = StatusEnum.ROUTE_CHANGE
         modifier_text = _match[1]
+        if _match[2] == "、各駅に停車します":
+            ret_snippet = Snippet(SnippetEnum.STOP_AT_EACH_STATION)
+            for field in find_all_field(modifier_text):
+                match field[0]:
+                    case BetweenStations.header:
+                        ret_snippet.sections.append(BetweenStations(field[1]))
+    elif _match := re.fullmatch( r"(.*?)を中止しています", text ):
+        ret_status.modifiers = gen_modifiers(_match[1])
+        ret_status.enum = StatusEnum.STOP
+        for other in ["女性専用車"]:
+            if other in _match[1]:
+                ret_status.modifiers[0].others.append(other)
 
     if modifier_text:
-        ret.modifiers = gen_modifiers(modifier_text)
+        ret_status.modifiers = gen_modifiers(modifier_text)
 
-    return ret
+    return ret_status, ret_snippet
 
 def gen_modifiers(text:str) -> list[StatusModifier]:
 
