@@ -604,7 +604,7 @@ class Status:
                     return ""
             case StatusEnum.DIRECT_RESUMED:
                 try:
-                    return "We have resumed our direct train operation into the %s." % self.find_all_lines()[0].format_en()
+                    return "We have resumed our direct train operation into the %s." % self.find_all_lines()[0].format_en(in_sentence=True)
                 except IndexError:
                     return ""
             case _:
