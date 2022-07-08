@@ -96,9 +96,6 @@ class StatusModifier:
             if self.some_train:
                 result.append("一部列車")
 
-        if self.others:
-            result.append(concat_ja(self.others))
-
         self.some_train = original_some_train
 
         if result:
