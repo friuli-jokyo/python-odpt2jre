@@ -560,6 +560,16 @@ class Status:
                         status_text = "is currently operating on the %s route in limited areas" % self.find_all_lines()[0].format_en()
                     except IndexError:
                         status_text = "has {invalid} operation"
+                case StatusEnum.STOP:
+                    if others := self.find_all_others():
+                        others_texts:list[str] = [ other for other in others if other ]
+                        if others_texts and others_texts[0] == "女性専用車":
+                            status_text = "does not provide 'women only' cars"
+                            if self.modifiers[0].direction and (direction_str := self.modifiers[0].direction.format_en()):
+                                if "For " in direction_str:
+                                    status_text += " on the %s direction" % direction_str.replace("For ", "")
+                                else:
+                                    status_text += " on the %s" % direction_str
                 case StatusEnum.SOME_TRAIN_CANCEL:
                     pre_line, post_line, post_status = modifier.build_main_en("of", True)
                     status_text = "is out of service"
