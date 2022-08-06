@@ -67,7 +67,10 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
             for field in field_list:
                 match field[0]:
                     case CauseName.header:
-                        result.cause = Cause(field[1])
+                        if result.cause:
+                            result.cause.causes.append(CauseName(field[1]))
+                        else:
+                            result.cause = Cause(field[1])
 
             for field in field_list:
                 match field[0]:
