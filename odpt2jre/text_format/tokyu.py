@@ -121,7 +121,7 @@ def text2status(text:str, lineID:str) -> tuple[Optional[Status], Optional[Status
     if "一部" in text:
         primary_status.modifiers[0].some_train = True
 
-    if "遅れ" in text:
+    if "遅れ" in text or "ダイヤが乱れ" in text:
         primary_status.enum = StatusEnum.DELAY
     elif "運休" in text:
         if "一部" in text or "Ｓトレイン" in text:
@@ -133,7 +133,7 @@ def text2status(text:str, lineID:str) -> tuple[Optional[Status], Optional[Status
             if other in text:
                 primary_status.enum = StatusEnum.STOP
                 primary_status.modifiers[0].others.append(other)
-    elif "行先変更" in text or "行き先変更" in text:
+    elif "行先変更" in text or "行き先変更" in text or "行き先を変更" in text:
         primary_status.enum = StatusEnum.DESTINATION_CHANGE
     elif _match := re.fullmatch( r"(.+?)で折返し運転を行っています", text):
         primary_status.enum = StatusEnum.OPERATION_STOP
