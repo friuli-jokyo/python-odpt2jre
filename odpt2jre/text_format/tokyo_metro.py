@@ -19,7 +19,12 @@ staList = {
     "TokyoMetro.Ginza":[["[Sta:20]","[Sta:7001]","[Sta:7002]","[Sta:7003]","[Sta:7004]","[Sta:7005]","[Sta:7006]","[Sta:29]","[Sta:7007]","[Sta:7008]","[Sta:7009]","[Sta:7010]","[Sta:2]","[Sta:7011]","[Sta:7012]","[Sta:5]","[Sta:7013]","[Sta:7014]","[Sta:1001]"]]
 }
 
+other_suggest_list:list[str] = ["快速運転","女性専用車両","女性専用車","急行運転"]
+liner_list:list[str] = ["ＴＨＬＩＮＥＲ","Ｓ−ＴＲＡＩＮ"]
+
 def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
+
+    global liner_list
 
     if not info.train_information_status:
         return [common.normal_operation(info,remove_macrons=True)]
@@ -96,6 +101,12 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     elif "一部列車が運休となって" in main_status_text:
         result.status_main.enum = StatusEnum.SOME_TRAIN_CANCEL
         result.status_main.modifiers[0].some_train = True
+    else:
+        for liner in liner_list:
+            if liner in main_status_text and "運休" in main_status_text:
+                result.status_main.enum = StatusEnum.SOME_TRAIN_CANCEL
+                result.status_main.modifiers[0].some_train = True
+                break
 
     for i,sub_text in enumerate(sub_text_list):
         if _match := re.fullmatch( r"(.+?)(只今、.+?振替輸送を実施しています)", sub_text ):
@@ -172,17 +183,17 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
 
 def divide_stop_resume( info:TrainInformation, text:str ,stop:bool = True ):
 
+    global other_suggest_list, liner_list
+
     line_list:list[LineName] = []
     other_list:list[str] = []
     some_cancel:bool = False
 
-    other_suggest_list:list[str] = ["快速運転","女性専用車両","女性専用車","急行運転"]
     for suggest in other_suggest_list:
         if suggest in text:
             text = text.replace(suggest,"")
             other_list.append(suggest)
 
-    liner_list:list[str] = ["ＴＨＬＩＮＥＲ","Ｓ−ＴＲＡＩＮ"]
     for liner in liner_list:
         if re.search(liner+r"[0-9０-９・]+号の運転", text):
             some_cancel = True
