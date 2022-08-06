@@ -68,20 +68,32 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                 match field[0]:
                     case CauseName.header:
                         if result.cause:
-                            result.cause.causes.append(CauseName(field[1]))
+                            result.cause.sub_cause = Cause(field[1])
                         else:
                             result.cause = Cause(field[1])
 
-            for field in field_list:
-                match field[0]:
-                    case LineName.header:
-                        if result.cause and field[1] != "[Line:TWR.Rinkai]":
-                            result.cause.lines.append(LineName(field[1]))
-                    case SingleStation.header:
-                        if result.cause:
-                            result.cause.sections.append(SingleStation(field[1]))
-                    case BetweenStations.header:
-                        if result.cause:
-                            result.cause.sections.append(BetweenStations(field[1]))
+            if result.cause:
+                is_sub_cause = False
+
+                for field in field_list:
+                    match field[0]:
+                        case CauseName.header:
+                            is_sub_cause = True
+                        case LineName.header:
+                            if field[1] != "[Line:TWR.Rinkai]":
+                                if is_sub_cause and result.cause.sub_cause:
+                                    result.cause.sub_cause.lines.append(LineName(field[1]))
+                                else:
+                                    result.cause.lines.append(LineName(field[1]))
+                        case SingleStation.header:
+                            if is_sub_cause and result.cause.sub_cause:
+                                result.cause.sub_cause.sections.append(SingleStation(field[1]))
+                            else:
+                                result.cause.sections.append(SingleStation(field[1]))
+                        case BetweenStations.header:
+                            if is_sub_cause and result.cause.sub_cause:
+                                result.cause.sub_cause.sections.append(BetweenStations(field[1]))
+                            else:
+                                result.cause.sections.append(BetweenStations(field[1]))
 
     return [result]

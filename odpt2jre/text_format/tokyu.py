@@ -50,19 +50,35 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
     for field in cause_field_list:
         match field[0]:
             case CauseName.header:
-                result.cause = Cause(field[1])
+                if result.cause:
+                    result.cause.sub_cause = Cause(field[1])
+                else:
+                    result.cause = Cause(field[1])
             case ClockTime.header:
                 result.time_occur = ClockTime(field[1])
 
     if result.cause:
+        is_sub_cause = False
+
         for field in cause_field_list:
             match field[0]:
+                case CauseName.header:
+                    is_sub_cause = True
                 case LineName.header:
-                    result.cause.lines.append( LineName(field[1]) )
+                    if is_sub_cause and result.cause.sub_cause:
+                        result.cause.sub_cause.lines.append(LineName(field[1]))
+                    else:
+                        result.cause.lines.append(LineName(field[1]))
                 case SingleStation.header:
-                    result.cause.sections.append( SingleStation(field[1]) )
+                    if is_sub_cause and result.cause.sub_cause:
+                        result.cause.sub_cause.sections.append(SingleStation(field[1]))
+                    else:
+                        result.cause.sections.append(SingleStation(field[1]))
                 case BetweenStations.header:
-                    result.cause.sections.append( BetweenStations(field[1]) )
+                    if is_sub_cause and result.cause.sub_cause:
+                        result.cause.sub_cause.sections.append(BetweenStations(field[1]))
+                    else:
+                        result.cause.sections.append(BetweenStations(field[1]))
 
     status_main, status_sub = text2status(main_status_text, info.get_line())
     if status_main:

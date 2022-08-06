@@ -71,7 +71,7 @@ class Cause(MultiLanguageExpression, header=""):
                 result.append(concat_ja(temp_causes))
                 if self.sub_cause:
                     result.append("および")
-                    result.append(self.sub_cause.format_ja())
+                    result.append(self.sub_cause.format_ja()[:-5]) # remove "の影響で、"
                 result.append("の影響で、")
                 return "".join(result)
             else:
