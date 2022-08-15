@@ -16,6 +16,7 @@ class SnippetEnum(StringEnum):
     MAY_TAKE_LONGER_TIME = auto()
     STOP_AT_EACH_STATION = auto()
     SPECIAL_RAPID_NOT_STOP = auto()
+    NUMBER_OF_TRAINS_REDUCED = auto()
 
 class Snippet:
 
@@ -49,6 +50,8 @@ class Snippet:
                 return "目的地まで通常より大幅に時間を要する場合があります。"
             case SnippetEnum.SPECIAL_RAPID_NOT_STOP:
                 return "特別快速・青梅特快は停車しません。"
+            case SnippetEnum.NUMBER_OF_TRAINS_REDUCED:
+                return "運転本数が少なくなっています。"
             case _:
                 return ""
 
@@ -72,6 +75,8 @@ class Snippet:
                     return "The line will stop at each station."
             case SnippetEnum.SPECIAL_RAPID_NOT_STOP:
                 return "Special Rapid/Ōme Special Rapid does not stop."
+            case SnippetEnum.NUMBER_OF_TRAINS_REDUCED:
+                return "The number of trains running is currently reduced."
             case _:
                 return ""
 
@@ -95,6 +100,8 @@ class Snippet:
                     return "" #TODO
             case SnippetEnum.SPECIAL_RAPID_NOT_STOP:
                 return "특별 쾌속오메 특별쾌속은 정차하지 않아요."
+            case SnippetEnum.NUMBER_OF_TRAINS_REDUCED:
+                return "운행 열차수가 적어지고 있습니다."
             case _:
                 return ""
 
@@ -118,6 +125,8 @@ class Snippet:
                     return "" #TODO
             case SnippetEnum.SPECIAL_RAPID_NOT_STOP:
                 return "特别快、青梅特快不会停车。"
+            case SnippetEnum.NUMBER_OF_TRAINS_REDUCED:
+                return "运行班次已减少。"
             case _:
                 return ""
 
@@ -141,5 +150,7 @@ class Snippet:
                     return "" #TODO
             case SnippetEnum.SPECIAL_RAPID_NOT_STOP:
                 return "特別快、青梅特快不會停車。"
+            case SnippetEnum.NUMBER_OF_TRAINS_REDUCED:
+                return "運行班次已減少。"
             case _:
                 return ""
