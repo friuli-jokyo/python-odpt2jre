@@ -107,6 +107,8 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                 gen.sentences_sub.append(Snippet(SnippetEnum.MAY_TAKE_LONGER_TIME))
             elif "運転本数が少なくなっています" in sub_text:
                 gen.sentences_sub.append(Snippet(SnippetEnum.NUMBER_OF_TRAINS_REDUCED))
+            elif "女性専用車を中止しています" in sub_text:
+                gen.sentences_sub.append(Snippet(SnippetEnum.WOMEN_ONLY_CAR_DISCONTINUED))
             else:
                 if sub_status := gen_status(sub_text, StatusPlacement.MAIN):
                     gen.sentences_sub.append(sub_status[0])

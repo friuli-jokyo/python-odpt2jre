@@ -17,6 +17,7 @@ class SnippetEnum(StringEnum):
     STOP_AT_EACH_STATION = auto()
     SPECIAL_RAPID_NOT_STOP = auto()
     NUMBER_OF_TRAINS_REDUCED = auto()
+    WOMEN_ONLY_CAR_DISCONTINUED = auto()
 
 class Snippet:
 
@@ -52,6 +53,8 @@ class Snippet:
                 return "特別快速・青梅特快は停車しません。"
             case SnippetEnum.NUMBER_OF_TRAINS_REDUCED:
                 return "運転本数が少なくなっています。"
+            case SnippetEnum.WOMEN_ONLY_CAR_DISCONTINUED:
+                return "女性専用車を中止しています。"
             case _:
                 return ""
 
@@ -77,6 +80,8 @@ class Snippet:
                 return "Special Rapid/Ōme Special Rapid does not stop."
             case SnippetEnum.NUMBER_OF_TRAINS_REDUCED:
                 return "The number of trains running is currently reduced."
+            case SnippetEnum.WOMEN_ONLY_CAR_DISCONTINUED:
+                return "Women-only cars have been discontinued."
             case _:
                 return ""
 
@@ -102,6 +107,8 @@ class Snippet:
                 return "특별 쾌속오메 특별쾌속은 정차하지 않아요."
             case SnippetEnum.NUMBER_OF_TRAINS_REDUCED:
                 return "운행 열차수가 적어지고 있습니다."
+            case SnippetEnum.WOMEN_ONLY_CAR_DISCONTINUED:
+                return "여성 전용 차량을 중지합니다."
             case _:
                 return ""
 
@@ -127,6 +134,8 @@ class Snippet:
                 return "特别快、青梅特快不会停车。"
             case SnippetEnum.NUMBER_OF_TRAINS_REDUCED:
                 return "运行班次已减少。"
+            case SnippetEnum.WOMEN_ONLY_CAR_DISCONTINUED:
+                return "我们正在停止女性专用车。"
             case _:
                 return ""
 
@@ -152,5 +161,7 @@ class Snippet:
                 return "特別快、青梅特快不會停車。"
             case SnippetEnum.NUMBER_OF_TRAINS_REDUCED:
                 return "運行班次已減少。"
+            case SnippetEnum.WOMEN_ONLY_CAR_DISCONTINUED:
+                return "我們將停止女性專用車。"
             case _:
                 return ""
