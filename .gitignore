@@ -130,3 +130,7 @@ dmypy.json
 
 # Visual Studio Code settings
 .vscode/
+
+# ODPT and JRE information cache
+__odptcache__/
+__jrecache__/
