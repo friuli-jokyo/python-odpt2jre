@@ -195,6 +195,7 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
         cls.alias_dict = {}
         with open("{}/table/{}".format(os.path.dirname(__file__), filename_id2text), encoding="utf-8") as f:
             data = csv.reader(f)
+            next(data)
             for row in data:
                 try:
                     cls._id2text[row[0]] = row[1:]
@@ -203,10 +204,11 @@ class MultiLanguageExpressionWithTable(MultiLanguageExpression, header="None"):
                     pass
         with open("{}/table/{}".format(os.path.dirname(__file__), filename_alias), encoding="utf-8") as f:
             data = csv.reader(f)
+            next(data)
             for row in data:
                 try:
                     cls._text2id[row[0]] = [row[1]]
-                    if len(row) >= 3:
+                    if len(row) >= 3 and row[2]:
                         cls._text2id[row[0]].append("1")
                     cls.alias_dict[row[0]] = cls._id2text[row[1]][0]
                 except IndexError:
