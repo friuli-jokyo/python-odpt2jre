@@ -94,7 +94,7 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
         divide_stop_resume(result, main_status_text, True)
     elif re.fullmatch( r"直通運転を中止していましたが、.+?再開しました", main_status_text):
         result.status_occasion.enum = StatusEnum.DIRECT_RESUMED
-    elif "全線で運転を見合わせています" in main_status_text:
+    elif "運転を見合わせています" in main_status_text:
         result.status_main.enum = StatusEnum.OPERATION_STOP
     elif "折返し運転を行っています" in main_status_text:
         result.status_main.enum = StatusEnum.OPERATION_STOP
@@ -133,6 +133,14 @@ def to_jre(info:odpt.TrainInformation) -> list[TrainInformation]:
                 divide_stop_resume(result, subMatch[1], False)
             if subMatch[2]:
                 divide_stop_resume(result, subMatch[2], True)
+        elif subMatch := re.fullmatch( r"運転見合わせ区間　(.+?)" ,sub_text):
+            if result.status_main.enum == StatusEnum.OPERATION_STOP:
+                formatted_text = re.sub(r"\[(SingleSta|BetweenSta):(.+?\])\]",r"\2",subMatch[1]).replace("駅","").replace("間","").replace("内","")
+                suspendedSections = [ re.split("[〜～\\,]",x) for x in formatted_text.split("　") ]
+
+                for section in suspendedSections:
+                    result.status_main.modifiers[0].sections.append(BetweenStations("[BetweenSta:%s,%s]" %(section[0],section[-1])))
+
         elif subMatch := re.fullmatch( r"折返し運転区間　(.+?)" ,sub_text):
             if result.status_main.enum == StatusEnum.OPERATION_STOP:
                 try:
