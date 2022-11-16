@@ -1,15 +1,15 @@
 from __future__ import annotations
 
+from enum import Enum, auto
 from typing import Optional
 
 from .common import concat_en, concat_ja
-from .enums import StringEnum, auto
 from .line import LineName
 from .output_dict import MultiLanguageDictWithId
 from .status_modifier import StatusModifier
 
 
-class StatusEnum(StringEnum):
+class StatusEnum(Enum):
     """
     Enumerates the IDs of status.
     """
@@ -301,13 +301,13 @@ class StatusEnum(StringEnum):
         # result["ja-Hrkt"] = self.
         return result
 
-class StatusPlacement(StringEnum):
+class StatusPlacement(Enum):
 
     OCCASION = auto()
     MAIN = auto()
     WITH = auto()
 
-class StatusIcon(StringEnum):
+class StatusIcon(Enum):
 
     NULL = auto()
 

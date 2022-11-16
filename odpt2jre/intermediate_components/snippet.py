@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+from enum import Enum, auto
+
 from odpt2jre.intermediate_components.station import BetweenStations, SingleStation
 
-from .enums import StringEnum, auto
 
-
-class SnippetEnum(StringEnum):
+class SnippetEnum(Enum):
     """
     Enumerates the IDs of snippets.
     """

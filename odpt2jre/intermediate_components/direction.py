@@ -1,22 +1,22 @@
 import re
 from typing import Optional
+from enum import Enum
 
 from .output_dict import MultiLanguageDictWithId
 from .multi_language_expression import MultiLanguageExpression
 from .station import StationName
-from .enums import StringEnum, auto
 
 
-class DirectionEnum(StringEnum):
+class DirectionEnum(Enum):
 
-    NULL = auto()
-    INBOUND = auto()
-    OUTBOUND = auto()
-    INBOUND_AND_OUTBOUND = auto()
-    INNER_CIRCLE = auto()
-    OUTER_CIRCLE = auto()
-    INNER_AND_OUTER_CIRCLE = auto()
-    FOR_STATION = auto()
+    NULL = "null"
+    INBOUND = "inbound"
+    OUTBOUND = "outbound"
+    INBOUND_AND_OUTBOUND = "inbound_and_outbound"
+    INNER_CIRCLE = "inner_circle"
+    OUTER_CIRCLE = "outer_circle"
+    INNER_AND_OUTER_CIRCLE = "inner_and_outer_circle"
+    FOR_STATION = "for_station"
 
     def is_circle(self) -> bool:
         match self:
@@ -141,7 +141,7 @@ class DirectionEnum(StringEnum):
                 continue
             if enum == DirectionEnum.FOR_STATION:
                 continue
-            field = f"[Direction:{enum.name}]"
+            field = f"[Direction:{enum.value}]"
             text = text.replace(enum.format_ja(),field)
         return text
 
@@ -157,7 +157,7 @@ class Direction(MultiLanguageExpression, header="Direction"):
                 self.enum = DirectionEnum.FOR_STATION
                 self._station = StationName(self._args[0])
             else:
-                self.enum = DirectionEnum.from_str(self._args[0])
+                self.enum = DirectionEnum(self._args[0])
         else:
             raise ValueError("Invalid argument number.")
 

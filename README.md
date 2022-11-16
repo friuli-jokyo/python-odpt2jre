@@ -40,7 +40,7 @@ pip install git+https://github.com/friuli-jokyo/python-odpt2jre
    },
    "cause": None,
    "direction": {
-      "id": "INBOUND_AND_OUTBOUND",
+      "id": "inbound_and_outbound",
       "ja": "上下線",
       "en": "Inbound and outbound lines",
       "ko": "상하행선",

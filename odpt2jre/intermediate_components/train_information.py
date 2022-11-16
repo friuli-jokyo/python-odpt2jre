@@ -105,7 +105,7 @@ class TrainInformation:
         if status.modifiers[0].direction:
             return status.modifiers[0].direction
         else:
-            return Direction("[Direction:INBOUND_AND_OUTBOUND]")
+            return Direction("[Direction:inbound_and_outbound]")
 
     @property
     def section(self) -> Optional[BetweenStations]:

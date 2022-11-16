@@ -195,7 +195,7 @@ class OrdinalDirectionFromStation(MultiLanguageExpression, header="OrdinalFromSt
         super().__init__(field)
         if len(self._args)==2:
             self._station = SingleStation(self._args[0])
-            self._direction = OrdinalDirection.from_ja(self._args[1])
+            self._direction = OrdinalDirection(self._args[1])
 
 
     def format_ja(self) -> str:
