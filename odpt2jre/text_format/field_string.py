@@ -54,8 +54,8 @@ def embed_field(text:str) -> str:
     text = re.sub( f"\\[Line:(.+?)\\] ({Direction.regex})", r"[Line:\1,\2]", text )
 
     # 駅間
-    text = re.sub( f"({STATION})駅?[〜～]({STATION})駅?[〜～]({STATION})駅?間?", r"[BetweenSta:\1,\2,\3]", text )
-    text = re.sub( f"({STATION})駅?[〜～]({STATION})駅?間?", r"[BetweenSta:\1,\2]", text )
+    text = re.sub( f"({STATION})駅?[〜～ ]+({STATION})駅?[〜～ ]+({STATION})駅?間?", r"[BetweenSta:\1,\2,\3]", text )
+    text = re.sub( f"({STATION})駅?[〜～ ]+({STATION})駅?間?", r"[BetweenSta:\1,\2]", text )
     text = re.sub( f"({STATION})駅?から({STATION})駅?", r"[BetweenSta:\1,\2]", text )
 
     # 単駅
